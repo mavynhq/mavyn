@@ -1,9 +1,63 @@
-import { servicesAnimIn } from '$utils/servicesAnimIn';
-import { servicesAnimOut } from '$utils/servicesAnimOut';
+import { gsap } from 'gsap';
+import { formNext } from 'src/anim/formNext';
+import { imageSliderNext } from 'src/anim/imageSliderNext';
+import { imageSliderPrev } from 'src/anim/imageSliderPrev';
+import { servicesAnimIn } from 'src/anim/servicesAnimIn';
+import { servicesAnimOut } from 'src/anim/servicesAnimOut';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  // Services Accordian Animation
+  // Home Form Slider
+  const formSlide01 = $('#bookFormSlide01');
+  const formSlide01Children = formSlide01.children('.slider-slide_item');
+  const formSlide02 = $('#bookFormSlide02');
+  const formSlide02Children = formSlide02.children('.slider-slide_item');
+  const formSubmit = $('#formSubmitLoader');
+  const formSubmitChildren = formSubmit.children();
+
+  const formTimeline = formNext(
+    formSlide01[0],
+    formSlide01Children,
+    formSlide02[0],
+    formSlide02Children
+  );
+
+  document.querySelector('#bookFormNext')?.addEventListener('click', () => {
+    formTimeline.play();
+  });
+  document.querySelector('#bookFormBack')?.addEventListener('click', () => {
+    formTimeline.reverse();
+  });
+
+  // Home Image Slider Animation
+  const images = [...document.querySelectorAll('.home-slider_image')];
+  images.reverse();
+  const numbersWrap = document.getElementsByClassName('home-slider_number-wrapper');
+  let currentImageCount = 0;
+  let currentScrollPos = 0;
+  const imageAmount = images.length;
+  const imagesPercent = 1 / images.length;
+
+  document.querySelector('#controlsNext')?.addEventListener('click', () => {
+    const currentImage = images[currentImageCount];
+    if (currentImageCount >= 0 && currentImageCount < imageAmount - 1) {
+      currentImageCount += 1;
+      currentScrollPos = currentImageCount * imagesPercent;
+      imageSliderNext(currentImage, currentScrollPos, numbersWrap);
+    }
+  });
+  document.querySelector('#controlsPrev')?.addEventListener('click', () => {
+    const prevImage = images[currentImageCount - 1];
+    // console.log(prevImage, currentImageCount);
+
+    if (currentImageCount > 0 && currentImageCount <= imageAmount - 1) {
+      currentImageCount -= 1;
+      currentScrollPos = currentImageCount * imagesPercent;
+      imageSliderPrev(prevImage, currentScrollPos, numbersWrap);
+    }
+  });
+
+  // Home Services Accordian Animation
   let toggled = false;
   $('.home-services_item-wrap').on('click', function () {
     const contentWrapper: HTMLElement = $(this).children('.home-services_item-content')[0];
