@@ -1,11 +1,11 @@
 import { gsap } from 'gsap';
 
-export const formNext = (
-  formSlide01: HTMLElement,
-  formSlide01Children: JQuery<HTMLElement>,
-  formSlide02: HTMLElement,
-  formSlide02Children: JQuery<HTMLElement>
-) => {
+export const formNext = () => {
+  const formSlide01 = $('#bookFormSlide01');
+  const formSlide01Children = formSlide01.children('.slider-slide_item');
+  const formSlide02 = $('#bookFormSlide02');
+  const formSlide02Children = formSlide02.children('.slider-slide_item');
+
   const formNext = gsap.timeline({ paused: true });
   formNext.to(formSlide01Children, {
     duration: 0.8,
