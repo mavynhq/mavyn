@@ -1,9 +1,10 @@
-import { gsap } from 'gsap';
 import { formNext } from 'src/anim/formNext';
 import { imageSliderNext } from 'src/anim/imageSliderNext';
 import { imageSliderPrev } from 'src/anim/imageSliderPrev';
 import { servicesAnimIn } from 'src/anim/servicesAnimIn';
 import { servicesAnimOut } from 'src/anim/servicesAnimOut';
+
+import { convertJSON } from '$utils/convertJSON';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -14,7 +15,6 @@ window.Webflow.push(() => {
   const formSlide02Children = formSlide02.children('.slider-slide_item');
   const formSubmit = $('#formSubmitLoader');
   const formSubmitChildren = formSubmit.children();
-
   const formTimeline = formNext(
     formSlide01[0],
     formSlide01Children,
@@ -27,6 +27,31 @@ window.Webflow.push(() => {
   });
   document.querySelector('#bookFormBack')?.addEventListener('click', () => {
     formTimeline.reverse();
+  });
+
+  // const bookingForm = document.querySelector('#wf-form-bookingForm');
+  // bookingForm?.addEventListener('submit', (e) => {
+  //   e.preventDefault();
+  //   // const form = $(e.target);
+  //   // console.log('e', form);
+  // });
+
+  $('#wf-form-bookingForm').each(function (i, el) {
+    const form = $(el)[0];
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const target = e.target as HTMLInputElement;
+      const formElement = $(target);
+      const formData = convertJSON(formElement);
+      console.log('form data', formData);
+    });
+    // form.submit(function (e) {
+    //   e.preventDefault();
+    //   form = $(e.target);
+    //   const data = convertFormToJSON(form);
+    //   let action = form.attr('action');
+    //   console.log('action', action, 'data', data);
+    // });
   });
 
   // Home Image Slider Animation

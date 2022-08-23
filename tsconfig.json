@@ -3,8 +3,11 @@
   "compilerOptions": {
     "rootDir": ".",
     "baseUrl": "./",
+    "strictNullChecks": true,
+    "noImplicitAny": true,
     "paths": {
-      "$utils/*": ["src/utils/*"]
+      "$utils/*": ["src/utils/*"],
+      "$anim/*": ["src/anim/*"]
     }
   }
 }

@@ -6,8 +6,6 @@ export const formNext = (
   formSlide02: HTMLElement,
   formSlide02Children: JQuery<HTMLElement>
 ) => {
-  console.log(formSlide02Children);
-
   const formNext = gsap.timeline({ paused: true });
   formNext.to(formSlide01Children, {
     duration: 0.8,
