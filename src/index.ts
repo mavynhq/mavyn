@@ -4,6 +4,8 @@ import { imageSliderPrev } from '$anim/imageSliderPrev';
 import { servicesAnimIn } from '$anim/servicesAnimIn';
 import { servicesAnimOut } from '$anim/servicesAnimOut';
 import { convertJSON } from '$utils/convertJSON';
+import { expertFormPost } from '$utils/expertFormPost';
+import { expertJSON } from '$utils/generateExperJSON';
 import { mainFormPost } from '$utils/mainFormPost';
 
 window.Webflow ||= [];
@@ -88,5 +90,17 @@ window.Webflow.push(() => {
       toggled = false;
       servicesAnimOut(contentWrapper, targetImage, targetText, targetIndicator);
     }
+  });
+  // ------------------
+  // Experts apply form
+  // ------------------
+  const expertForm = document.querySelector('#wf-form-expertForm');
+  expertForm?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const target = e.target as HTMLFormElement;
+    const formData = new FormData(target);
+
+    const expertFormJSON = expertJSON(formData, target);
+    expertFormPost(expertFormJSON, target);
   });
 });
