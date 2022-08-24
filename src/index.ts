@@ -17,6 +17,8 @@ window.Webflow.push(() => {
     formTimeline.reverse();
   });
 
+  console.log('here');
+
   const bookingForm = document.querySelector('#wf-form-bookingForm');
   bookingForm?.addEventListener('submit', (e) => {
     e.preventDefault();
