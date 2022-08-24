@@ -8,7 +8,10 @@ import { mainFormPost } from '$utils/mainFormPost';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
+  // ----------------
   // Home Form Slider
+  // ----------------
+  //Form progression animation
   const formTimeline = formNext();
   document.querySelector('#bookFormNext')?.addEventListener('click', () => {
     formTimeline.play();
@@ -17,8 +20,7 @@ window.Webflow.push(() => {
     formTimeline.reverse();
   });
 
-  console.log('here');
-
+  // Form ajax submission
   const bookingForm = document.querySelector('#wf-form-bookingForm');
   bookingForm?.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -30,7 +32,14 @@ window.Webflow.push(() => {
     mainFormPost(formElement, apiEndpoint, formData);
   });
 
+  // Form reset
+  document.querySelector('#resetMainForm')?.addEventListener('click', () => {
+    document.location.reload();
+  });
+
+  // ---------------------------
   // Home Image Slider Animation
+  // ---------------------------
   const images = [...document.querySelectorAll('.home-slider_image')];
   images.reverse();
   const numbersWrap = document.getElementsByClassName('home-slider_number-wrapper');
@@ -49,8 +58,6 @@ window.Webflow.push(() => {
   });
   document.querySelector('#controlsPrev')?.addEventListener('click', () => {
     const prevImage = images[currentImageCount - 1];
-    // console.log(prevImage, currentImageCount);
-
     if (currentImageCount > 0 && currentImageCount <= imageAmount - 1) {
       currentImageCount -= 1;
       currentScrollPos = currentImageCount * imagesPercent;
@@ -58,7 +65,9 @@ window.Webflow.push(() => {
     }
   });
 
+  // ---------------------------------
   // Home Services Accordian Animation
+  // ---------------------------------
   let toggled = false;
   $('.home-services_item-wrap').on('click', function () {
     const contentWrapper: HTMLElement = $(this).children('.home-services_item-content')[0];
