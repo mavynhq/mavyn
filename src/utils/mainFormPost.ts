@@ -3,12 +3,12 @@ import { bookFormWait } from '$anim/bookFormWait';
 export const mainFormPost = (
   form: JQuery<HTMLInputElement>,
   endpoint: string,
-  data: { [key: string]: string }
+  formData: { [key: string]: string }
 ) => {
   $.ajax({
     url: endpoint,
     method: 'POST',
-    data: JSON.stringify(data),
+    data: JSON.stringify(formData),
     contentType: 'application/json',
     dataType: 'json',
     beforeSend: function () {
@@ -22,8 +22,8 @@ export const mainFormPost = (
       // Display the "Done" block
       parent.children('.w-form-done').css('display', 'block');
     },
-    error: function () {
-      //   console.log('error', data);
+    error: function (data) {
+      console.log('error', data);
       const parent = $(form.parent());
       // Display the "Failed" block
       parent.find('.w-form-fail').css('display', 'block');
