@@ -1,0 +1,36 @@
+{
+    "slug": "plumbing",
+    "chatQuestions": [
+      {
+        "text": "Welcome to Mavyn! How can I help you with your question or issue?",
+        "type": "prompt"
+      },
+      {
+        "text": "How long has this issue been happening?",
+        "type": "prompt"
+      },
+      {
+        "text": "How do you want to connect with your expert:\nA) Video Chat\nB) Voice Chat\nC) Text Message\nD) Email",
+        "type": "contact"
+      },
+      {
+        "text": "What is the best email to reach you at?",
+        "type": "email"
+      },
+      {
+        "text": "Please provide your phone number with area code",
+        "type": "phone"
+      },
+      {
+        "text": "Thank you! We'll reach out momentarily to the email you provided with the next steps.",
+        "type": "complete"
+      }
+    ],
+    "answers": [
+      "This is a test ticket",
+      "1 day",
+      "A",
+      "test321@mavyn.com",
+      "123-123-1234"
+    ]
+  }

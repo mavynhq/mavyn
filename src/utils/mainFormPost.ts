@@ -22,8 +22,8 @@ export const mainFormPost = (
       // Display the "Done" block
       parent.children('.w-form-done').css('display', 'block');
     },
-    error: function (data) {
-      console.log('error', data);
+    error: function (req, err) {
+      console.log('req', req, 'error', err);
       const parent = $(form.parent());
       // Display the "Failed" block
       parent.find('.w-form-fail').css('display', 'block');

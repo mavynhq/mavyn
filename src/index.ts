@@ -3,9 +3,9 @@ import { imageSliderNext } from '$anim/imageSliderNext';
 import { imageSliderPrev } from '$anim/imageSliderPrev';
 import { servicesAnimIn } from '$anim/servicesAnimIn';
 import { servicesAnimOut } from '$anim/servicesAnimOut';
-import { convertJSON } from '$utils/convertJSON';
 import { expertFormPost } from '$utils/expertFormPost';
-import { expertJSON } from '$utils/generateExperJSON';
+import { bookingJSON } from '$utils/generateBookingJSON';
+import { expertJSON } from '$utils/generateExpertJSON';
 import { mainFormPost } from '$utils/mainFormPost';
 
 window.Webflow ||= [];
@@ -28,7 +28,7 @@ window.Webflow.push(() => {
     e.preventDefault();
     const target = e.target as HTMLInputElement;
     const formElement = $(target);
-    const formData = convertJSON(formElement);
+    const formData = bookingJSON(formElement);
     const apiEndpoint = bookingForm.getAttribute('action') as string;
 
     mainFormPost(formElement, apiEndpoint, formData);
