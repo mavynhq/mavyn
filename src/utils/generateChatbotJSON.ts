@@ -1,18 +1,18 @@
 export const chatbotJSON = (form: FormData) => {
-  // const questions: Element[] = document.querySelectorAll('.chatbot-message_quesiton.question');
-  const data = {
-    slug: document.querySelector('.section-page-tag')?.innerHTML,
-    chatQuestions: [...document.querySelectorAll('.text-size-small.question').entries()].map(
-      (obj) => ({
-        text: obj[1].innerHTML,
-        type: 'propmpt',
-      })
-    ),
+  const questionsList = document.querySelectorAll('.text-size-small.question');
+  const typesList = document.querySelectorAll('.chatbot-message_type');
 
+  const data = {
+    slug: document.querySelector('.section-page-tag')?.innerHTML.toLocaleLowerCase(),
+    chatQuestions: [...questionsList.entries()].map((dataObject, index) => ({
+      text: dataObject[1].innerHTML,
+      type: typesList[index].innerHTML,
+    })),
     answers: [...form.entries()].map((obj) => {
       return obj[1];
     }),
   };
 
-  console.log(data);
+  const finalData = JSON.stringify(data);
+  return finalData;
 };

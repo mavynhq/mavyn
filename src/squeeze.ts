@@ -1,6 +1,7 @@
 import { stepError } from '$anim/chatbotStepError';
 import { updateAnswer } from '$anim/chatbotUpdateAnswer';
 import { updateQuestion } from '$anim/chatbotUpdateQuestion';
+import { chatFormPost } from '$utils/chatFormPost';
 import { chatbotJSON } from '$utils/generateChatbotJSON';
 
 window.Webflow ||= [];
@@ -54,6 +55,8 @@ window.Webflow.push(() => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
     const formData = new FormData(target);
-    chatbotJSON(formData);
+    const chatJSON = chatbotJSON(formData);
+    console.log(chatJSON);
+    chatFormPost(chatJSON, target);
   });
 });
