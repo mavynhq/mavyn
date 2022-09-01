@@ -1,5 +1,3 @@
-import { getPublishDate } from '@finsweet/ts-utils';
-
 import { formNext } from '$anim/bookFomNext';
 import { imageSliderNext } from '$anim/imageSliderNext';
 import { imageSliderPrev } from '$anim/imageSliderPrev';
