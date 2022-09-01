@@ -18,6 +18,8 @@ window.Webflow.push(() => {
   const initialQuestion = chatbotQuestions[0] as HTMLElement;
   updateQuestion(initialQuestion);
 
+  console.log('here');
+
   const chatArea = document.querySelector('.chatbot_message-area') as HTMLElement;
   chatArea.scrollTop = chatArea.scrollHeight;
 
