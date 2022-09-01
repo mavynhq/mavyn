@@ -1,12 +1,14 @@
+import { getPublishDate } from '@finsweet/ts-utils';
+
 import { formNext } from '$anim/bookFomNext';
 import { imageSliderNext } from '$anim/imageSliderNext';
 import { imageSliderPrev } from '$anim/imageSliderPrev';
 import { servicesAnimIn } from '$anim/servicesAnimIn';
 import { servicesAnimOut } from '$anim/servicesAnimOut';
-import { expertFormPost } from '$utils/expertFormPost';
 import { bookingJSON } from '$utils/generateBookingJSON';
 import { expertJSON } from '$utils/generateExpertJSON';
-import { mainFormPost } from '$utils/mainFormPost';
+import { expertFormPost } from '$utils/postExpertForm';
+import { mainFormPost } from '$utils/postMainForm';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {

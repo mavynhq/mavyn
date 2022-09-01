@@ -6,14 +6,14 @@ export const servicesAnimIn = (
   targetText: HTMLElement,
   targetIndicator: HTMLElement
 ) => {
-  const servicesRevealIn = gsap.timeline();
+  const servicesRevealIn = gsap.timeline({ paused: true });
   servicesRevealIn.to([targetImage, targetText], {
     duration: 0,
     display: 'block',
   });
   servicesRevealIn.to(contentWrapper, {
     duration: 1,
-    height: '15vh',
+    height: 'auto',
     delay: 0,
     ease: 'expo.inOut',
   });

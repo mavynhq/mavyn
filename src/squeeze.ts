@@ -1,8 +1,8 @@
 import { stepError } from '$anim/chatbotStepError';
 import { updateAnswer } from '$anim/chatbotUpdateAnswer';
 import { updateQuestion } from '$anim/chatbotUpdateQuestion';
-import { chatFormPost } from '$utils/chatFormPost';
 import { chatbotJSON } from '$utils/generateChatbotJSON';
+import { chatFormPost } from '$utils/postChatForm';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -17,8 +17,6 @@ window.Webflow.push(() => {
 
   const initialQuestion = chatbotQuestions[0] as HTMLElement;
   updateQuestion(initialQuestion);
-
-  console.log('here');
 
   const chatArea = document.querySelector('.chatbot_message-area') as HTMLElement;
   chatArea.scrollTop = chatArea.scrollHeight;
@@ -53,12 +51,11 @@ window.Webflow.push(() => {
 
   const chatbotForm = document.querySelector('#chatbotForm');
   chatbotForm?.addEventListener('submit', (e) => {
-    console.log('chat submit');
     e.preventDefault();
     const target = e.target as HTMLFormElement;
     const formData = new FormData(target);
     const chatJSON = chatbotJSON(formData);
-    console.log(chatJSON);
+
     chatFormPost(chatJSON, target);
   });
 });

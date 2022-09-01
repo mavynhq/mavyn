@@ -1,7 +1,6 @@
 import { gsap } from 'gsap';
 
 export const updateQuestion = (element: HTMLElement) => {
-  console.log('update questions');
   const chatArea = document.querySelector('.chatbot_message-area') as Element;
   const revealElement = gsap.timeline();
   revealElement.to(element, {
