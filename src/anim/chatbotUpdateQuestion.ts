@@ -1,9 +1,12 @@
 import { gsap } from 'gsap';
 
-export const updateQuestion = (element: HTMLElement) => {
+export const updateQuestion = (curAnswer: number) => {
+  const chatbotQElements = document.querySelectorAll('.chatbot-message_quesiton.question');
+  const currentAnswerElement = chatbotQElements[curAnswer + 1];
   const chatArea = document.querySelector('.chatbot_message-area') as Element;
+
   const revealElement = gsap.timeline();
-  revealElement.to(element, {
+  revealElement.to(currentAnswerElement, {
     opacity: 1,
     display: 'block',
     y: 0,

@@ -10,6 +10,7 @@ export const chatFormPost = (data: string, target: HTMLFormElement) => {
       const wfDone = parent?.querySelector('.w-form-done') as HTMLElement;
       formEle.style.display = 'none';
       wfDone.style.display = 'block';
+      window.open('https://ask.mavyn.com/thank-you', '_blank');
     },
     error: function () {
       // alert('error on the form submitting', data);
