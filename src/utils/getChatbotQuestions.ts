@@ -3,7 +3,7 @@ export const getChatQuestions = () => {
   const typesList = document.querySelectorAll('.chatbot-message_type');
 
   const questions = [...questionsList.entries()].map((dataObject, index) => ({
-    text: dataObject[1].innerHTML,
+    text: dataObject[1].innerHTML.replace(/<[^>]*>?/gm, ''),
     type: typesList[index].innerHTML,
   }));
 
