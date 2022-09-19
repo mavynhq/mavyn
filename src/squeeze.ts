@@ -24,16 +24,12 @@ window.Webflow.push(() => {
   const expectedAamount = document.querySelectorAll('.chatbot-message_quesiton.answer').length - 1;
   const answers: string[] = [];
 
-  console.log('Q', questions);
-
   updateQuestion(answers.length - 1);
 
   document.querySelector('#chatbotSend')?.addEventListener('click', () => {
     const answerIndex = answers.length;
     const isEmailQuestion = questions[answerIndex]?.type === 'email';
     const isPhoneQuestion = questions[answerIndex]?.type === 'phone';
-
-    // console.log(isContactQuestion);
 
     const isPromptQuestion = answerIndex === 0;
 
