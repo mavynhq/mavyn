@@ -1,6 +1,7 @@
 import { formNext } from '$anim/bookFomNext';
 import { imageSliderNext } from '$anim/imageSliderNext';
 import { imageSliderPrev } from '$anim/imageSliderPrev';
+import { preloader } from '$anim/preloader';
 import { servicesAnimIn } from '$anim/servicesAnimIn';
 import { servicesAnimOut } from '$anim/servicesAnimOut';
 import { bookingJSON } from '$utils/generateBookingJSON';
@@ -10,6 +11,8 @@ import { mainFormPost } from '$utils/postMainForm';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
+  preloader();
+
   // ----------------
   // Home Form Slider
   // ----------------
