@@ -3,10 +3,12 @@ import { gsap } from 'gsap';
 export const preloader = () => {
   const pageContent = document.querySelector('.main-wrapper') as HTMLElement;
   const nav = document.querySelector('.nav_component');
-  const preloadWrapper = document.querySelector('.preloader') as HTMLElement;
+  const preloadWrapper = document.querySelector('.preloader_component') as HTMLElement;
   const preloaderImg = preloadWrapper.children[0];
+  const bookingForm = document.querySelector('.home-hero_booking-component');
   const orb1 = document.querySelector('.blur-p._01');
   const orb2 = document.querySelector('.blur-p._02');
+
   const preloadTL = gsap.timeline();
   preloadTL.set(preloadWrapper, { display: 'flex' });
   preloadTL.set(pageContent, { opacity: '0' });
@@ -29,6 +31,7 @@ export const preloader = () => {
     opacity: 1,
     ease: 'power4.easeIn',
   });
+  preloadTL.from(bookingForm, { duration: 0.6, y: '100%', ease: 'power4.easeInOut' }, '-=0.5');
   preloadTL.to(
     nav,
     {
@@ -38,6 +41,7 @@ export const preloader = () => {
     },
     '-=0.5'
   );
+
   preloadTL.set(preloadWrapper, { display: 'none' });
   //   console.log('orb', orb1);
 };
