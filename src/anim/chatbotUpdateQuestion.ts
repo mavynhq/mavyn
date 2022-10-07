@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 export const updateQuestion = (curAnswer: number) => {
   const chatbotQElements = document.querySelectorAll('.chatbot-message_quesiton.question');
   const currentAnswerElement = chatbotQElements[curAnswer + 1];
-  const chatArea = document.querySelector('.chatbot_message-area') as Element;
+  const chatArea = document.querySelector('.chatbot_message-component') as Element;
 
   const revealElement = gsap.timeline();
   revealElement.to(currentAnswerElement, {

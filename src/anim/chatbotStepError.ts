@@ -1,10 +1,10 @@
 import { gsap } from 'gsap';
 
 export const stepError = (index: number, error: string) => {
-  const chatFormElements = document.querySelectorAll('.form-text-area.chatbot');
+  const chatFormElements = document.querySelectorAll('.chatbot_text-area.chatbot');
   const curFormElement = chatFormElements[index] as HTMLInputElement;
-  const formErrorElement = document.querySelector('.chat-step-error');
-  const formErrorTextElement = document.querySelector('.step-error-text') as HTMLElement;
+  const formErrorElement = document.querySelector('.chatbot_step-error');
+  const formErrorTextElement = document.querySelector('.chatbot_error-text') as HTMLElement;
 
   formErrorTextElement.innerHTML = error;
 

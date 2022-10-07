@@ -5,11 +5,11 @@ export const updateAnswer = (curText: string, curAnswer: number) => {
   const currentAnswerElement = answersElements[curAnswer] as HTMLElement;
   currentAnswerElement.children[0].innerHTML = curText;
 
-  const chatbotAnswerForms = document.querySelectorAll('.form-text-area.chatbot');
+  const chatbotAnswerForms = document.querySelectorAll('.chatbot_text-area.chatbot');
   const curFormField = chatbotAnswerForms[curAnswer] as HTMLInputElement;
   const nextFormField = chatbotAnswerForms[curAnswer + 1] as HTMLInputElement;
 
-  const chatArea = document.querySelector('.chatbot_message-area') as Element;
+  const chatArea = document.querySelector('.chatbot_message-component') as Element;
 
   const updateAnswerTimeline = gsap.timeline();
   updateAnswerTimeline.to(currentAnswerElement, {

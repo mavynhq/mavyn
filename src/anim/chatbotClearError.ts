@@ -1,7 +1,7 @@
 import { gsap } from 'gsap';
 
 export const clearError = () => {
-  const formErrorElement = document.querySelector('.chat-step-error');
+  const formErrorElement = document.querySelector('.chatbot_step-error');
 
   const clearErrorTimeline = gsap.timeline();
   clearErrorTimeline.to(formErrorElement, {

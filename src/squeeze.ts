@@ -33,7 +33,7 @@ window.Webflow.push(() => {
 
     const isPromptQuestion = answerIndex === 0;
 
-    const curFormField = document.querySelectorAll('.form-text-area.chatbot')[
+    const curFormField = document.querySelectorAll('.chatbot_text-area.chatbot')[
       answerIndex
     ] as HTMLInputElement;
     const answerText = curFormField.value.trim();
@@ -70,7 +70,7 @@ window.Webflow.push(() => {
     clearError();
   });
 
-  const chatForms = document.querySelectorAll('.form-text-area.chatbot');
+  const chatForms = document.querySelectorAll('.chatbot_text-area.chatbot');
   for (let i = 0; i < chatForms.length; i++) {
     const curForm = chatForms[i] as HTMLElement;
     curForm.addEventListener('keypress', (e) => {
