@@ -14,14 +14,10 @@ export const stepError = (index: number, error: string) => {
     backgroundColor: 'rgba(24, 161, 255, 0.1)',
     borderColor: 'rgba(24, 161, 255, 0.6)',
   });
-  stepErrorTimeline.to(
-    formErrorElement,
-    {
-      duration: 0.5,
-      display: 'flex',
-      opacity: 1,
-      ease: 'Power4.easeIn',
-    },
-    '<'
-  );
+  stepErrorTimeline.to(formErrorElement, {
+    duration: 0.5,
+    display: 'flex',
+    opacity: 1,
+    ease: 'Power4.easeIn',
+  });
 };
