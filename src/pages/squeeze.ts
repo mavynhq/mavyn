@@ -8,8 +8,7 @@ import { chatFormPost } from '$utils/postChatForm';
 import { validateEmail } from '$utils/validateEmail';
 import { isValidPhoneFormat } from '$utils/validatePhone';
 
-window.Webflow ||= [];
-window.Webflow.push(() => {
+export const squeeze = () => {
   // ----------------------
   // Squeeze Page - Chatbot
   // ----------------------
@@ -92,4 +91,4 @@ window.Webflow.push(() => {
 
     chatFormPost(chatJSON, target);
   });
-});
+};
