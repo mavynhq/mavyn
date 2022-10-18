@@ -31,7 +31,7 @@ export const preloader = () => {
     opacity: 1,
     ease: 'power4.easeIn',
   });
-  preloadTL.from(bookingForm, { duration: 0.6, y: '100%', ease: 'power4.easeInOut' }, '-=0.5');
+  preloadTL.to(bookingForm, { duration: 0.6, y: '0rem', ease: 'power4.easeInOut' }, '<');
   preloadTL.to(
     nav,
     {
