@@ -3,6 +3,7 @@ import { stepError } from 'src/motion/chatbotStepError';
 import { updateAnswer } from 'src/motion/chatbotUpdateAnswer';
 import { updateQuestion } from 'src/motion/chatbotUpdateQuestion';
 
+import { navTransition } from '$anim/navTransition';
 import { chatbotJSON } from '$utils/generateChatbotJSON';
 import { getChatQuestions } from '$utils/getChatbotQuestions';
 import { chatFormPost } from '$utils/postChatForm';
@@ -10,6 +11,19 @@ import { validateEmail } from '$utils/validateEmail';
 import { isValidPhoneFormat } from '$utils/validatePhone';
 
 export const squeeze = () => {
+  // ------------------
+  // Page Globals
+  // ------------------
+
+  // set navbar animation
+  // ---------------------
+  const hasVideoBG = true;
+  const navScrollSection = document.querySelector('.section_services-testimonials')
+    ?.className as string;
+  setTimeout(() => {
+    navTransition(navScrollSection, hasVideoBG);
+  }, 100);
+
   // ----------------------
   // Chatbot
   // ----------------------
