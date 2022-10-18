@@ -7,7 +7,7 @@
     "noImplicitAny": true,
     "paths": {
       "$utils/*": ["src/utils/*"],
-      "$anim/*": ["src/anim/*"]
+      "$anim/*": ["src/motion/*"]
     }
   }
 }

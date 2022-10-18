@@ -1,19 +1,36 @@
-import { formNext } from '$anim/bookFomNext';
-import { imageSliderNext } from '$anim/imageSliderNext';
-import { imageSliderPrev } from '$anim/imageSliderPrev';
-import { preloader } from '$anim/preloader';
-import { servicesAnimIn } from '$anim/servicesAnimIn';
-import { servicesAnimOut } from '$anim/servicesAnimOut';
+import { formNext } from 'src/motion/bookFomNext';
+import { imageSliderNext } from 'src/motion/imageSliderNext';
+import { imageSliderPrev } from 'src/motion/imageSliderPrev';
+import { preloader } from 'src/motion/preloader';
+import { servicesAnimIn } from 'src/motion/servicesAnimIn';
+import { servicesAnimOut } from 'src/motion/servicesAnimOut';
+
+import { navTransition } from '$anim/navTransition';
 import { bookingJSON } from '$utils/generateBookingJSON';
 import { expertJSON } from '$utils/generateExpertJSON';
 import { expertFormPost } from '$utils/postExpertForm';
 import { mainFormPost } from '$utils/postMainForm';
 
 export const homepage = () => {
-  preloader();
+  // ------------------
+  // Page Globals
+  // ------------------
+
+  // Preloader
+  //-----------
+  const pl = preloader();
+  pl.play();
+
+  // set navbar animation
+  // ---------------------
+  const hasVideoBG = true;
+  const navScrollSection = document.querySelector('.section_home-values')?.className as string;
+  setTimeout(() => {
+    navTransition(navScrollSection, hasVideoBG);
+  }, 1000);
 
   // ----------------
-  // Home Form Slider
+  // Main Form Slider
   // ----------------
   //Form progression animation
   const formTimeline = formNext();

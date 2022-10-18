@@ -9,7 +9,7 @@ export const preloader = () => {
   const orb1 = document.querySelector('.blur-p._01');
   const orb2 = document.querySelector('.blur-p._02');
 
-  const preloadTL = gsap.timeline();
+  const preloadTL = gsap.timeline({ paused: true });
   preloadTL.set(preloadWrapper, { display: 'flex' });
   preloadTL.set(pageContent, { opacity: '0' });
 
@@ -43,5 +43,6 @@ export const preloader = () => {
   );
 
   preloadTL.set(preloadWrapper, { display: 'none' });
+  return preloadTL;
   //   console.log('orb', orb1);
 };

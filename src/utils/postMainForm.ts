@@ -1,4 +1,4 @@
-import { bookFormWait } from '$anim/bookFormWait';
+import { bookFormWait } from 'src/motion/bookFormWait';
 
 export const mainFormPost = (
   form: JQuery<HTMLInputElement>,

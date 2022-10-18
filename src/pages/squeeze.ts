@@ -1,7 +1,8 @@
-import { clearError } from '$anim/chatbotClearError';
-import { stepError } from '$anim/chatbotStepError';
-import { updateAnswer } from '$anim/chatbotUpdateAnswer';
-import { updateQuestion } from '$anim/chatbotUpdateQuestion';
+import { clearError } from 'src/motion/chatbotClearError';
+import { stepError } from 'src/motion/chatbotStepError';
+import { updateAnswer } from 'src/motion/chatbotUpdateAnswer';
+import { updateQuestion } from 'src/motion/chatbotUpdateQuestion';
+
 import { chatbotJSON } from '$utils/generateChatbotJSON';
 import { getChatQuestions } from '$utils/getChatbotQuestions';
 import { chatFormPost } from '$utils/postChatForm';
@@ -10,7 +11,7 @@ import { isValidPhoneFormat } from '$utils/validatePhone';
 
 export const squeeze = () => {
   // ----------------------
-  // Squeeze Page - Chatbot
+  // Chatbot
   // ----------------------
   const PROMPT_MIN_CHARACTERS = 10;
   const EMAIL_ERROR_STRING =
