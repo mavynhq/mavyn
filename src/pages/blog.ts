@@ -7,6 +7,14 @@ export const blog = () => {
   // Page Globals
   // ------------------
 
+  // set navbar animation
+  // ---------------------
+  const hasVideoBG = false;
+  const navScrollSection = document.querySelector('.section_blog-hero')?.className as string;
+  setTimeout(() => {
+    navTransition(navScrollSection, hasVideoBG);
+  }, 100);
+
   // get master blog list
   const blogsMaster = querySelectorAlltoArray('.blogs_item');
   let blogsFiltered: Element[] = [];
@@ -17,14 +25,6 @@ export const blog = () => {
   const totoalItemLimit = 100;
 
   renderBlogUpdate(blogsMaster, pageLimit);
-
-  // set navbar animation
-  // ---------------------
-  const hasVideoBG = false;
-  const navScrollSection = document.querySelector('.section_blog-hero')?.className as string;
-  setTimeout(() => {
-    navTransition(navScrollSection, hasVideoBG);
-  }, 100);
 
   // ------------------
   // Blog Filtering

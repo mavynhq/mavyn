@@ -1,6 +1,7 @@
 import { menuMobile } from '$anim/menuMobileReveals';
 
 import { blog } from './pages/blog';
+import { blogTemplate } from './pages/blogTemplate';
 import { homepage } from './pages/home.js';
 import { squeeze } from './pages/squeeze';
 
@@ -32,12 +33,19 @@ window.Webflow.push(() => {
   // Page Modules
   // ------------------
   const windowLocation = window.location.pathname as string;
+  // console.log('window', windowLocation);
 
   if (windowLocation === '/') {
     homepage();
   } else if (windowLocation.includes('/ask')) {
     squeeze();
   } else if (windowLocation.includes('/blog')) {
-    blog();
+    const hasFurtherIndex = windowLocation.substring(5);
+
+    if (hasFurtherIndex === '') {
+      blog();
+    } else {
+      blogTemplate();
+    }
   }
 });

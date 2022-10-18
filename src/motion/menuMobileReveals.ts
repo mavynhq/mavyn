@@ -3,7 +3,7 @@ import { gsap } from 'gsap';
 import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 
 export const menuMobile = () => {
-  const mobileMenu = document.querySelector('.nav_menu');
+  const mobileMenu = document.querySelector('.nav_menu-mobile');
   const menuSpans = querySelectorAlltoArray('.nav_icon-span');
 
   const mobileMenuTL = gsap.timeline({ paused: true });
