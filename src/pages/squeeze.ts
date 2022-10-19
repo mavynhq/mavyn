@@ -18,8 +18,7 @@ export const squeeze = () => {
   // set navbar animation
   // ---------------------
   const hasVideoBG = true;
-  const navScrollSection = document.querySelector('.section_services-testimonials')
-    ?.className as string;
+  const navScrollSection = document.querySelector('.section_services-hero')?.className as string;
   setTimeout(() => {
     navTransition(navScrollSection, hasVideoBG);
   }, 100);

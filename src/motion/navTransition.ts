@@ -15,8 +15,6 @@ export const navTransition = (scrollSection: string, hasVideoBG: boolean) => {
 
   const navVideoTL = gsap.timeline({});
 
-  // console.log(navSpan);
-
   if (hasVideoBG === false) {
     navVideoTL.set(navImages[0], { opacity: 0 }).set(navImages[1], { opacity: 1 });
 
@@ -38,8 +36,8 @@ export const navTransition = (scrollSection: string, hasVideoBG: boolean) => {
     const navScrollTrigger = gsap.timeline({
       scrollTrigger: {
         trigger: '.' + scrollSection,
-        start: 'top 40%',
-        end: 'top 40%',
+        start: '20% 10%',
+        end: '20% 10%',
         toggleActions: 'play none none reverse',
         // scrub: true,
         // markers: true,

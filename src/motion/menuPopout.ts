@@ -2,13 +2,13 @@ import { gsap } from 'gsap';
 
 import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 
-export const menuMobile = () => {
-  const mobileMenu = document.querySelector('.nav_menu-mobile');
+export const menuPopout = () => {
+  const mobileMenu = document.querySelector('.nav_menu-popout');
   const menuSpans = querySelectorAlltoArray('.nav_icon-span');
 
   const mobileMenuTL = gsap.timeline({ paused: true });
   mobileMenuTL
-    .to(mobileMenu, { display: 'flex' })
+    .to(mobileMenu, { display: 'block' })
     .from(mobileMenu, { duration: 0.8, opacity: 0, ease: 'power4.inOut' }, '<')
     .to(
       menuSpans[0],

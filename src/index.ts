@@ -1,4 +1,4 @@
-import { menuMobile } from '$anim/menuMobileReveals';
+import { menuPopout } from '$anim/menuPopout';
 
 import { blog } from './pages/blog';
 import { blogTemplate } from './pages/blogTemplate';
@@ -11,17 +11,24 @@ window.Webflow.push(() => {
   // Site Globals
   // ------------------
 
-  // Mobile Menu
+  // Mobile Popout
   // -----------
-  const mobileMenu = document.querySelector('.nav_menu-desktop');
+  const desktopButton = document.querySelector('#chatButton');
   const menuButton = document.querySelector('.nav_icon');
   let menuOpen = false;
-  const menuAnim = menuMobile();
+  const menuAnim = menuPopout();
 
   menuButton?.addEventListener('click', (e) => {
-    // console.log('btn');
     menuOpen = !menuOpen;
+    if (menuOpen === true) {
+      menuAnim.play();
+    } else {
+      menuAnim.reverse();
+    }
+  });
 
+  desktopButton?.addEventListener('click', (e) => {
+    menuOpen = !menuOpen;
     if (menuOpen === true) {
       menuAnim.play();
     } else {

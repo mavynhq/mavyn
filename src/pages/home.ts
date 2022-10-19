@@ -24,7 +24,7 @@ export const homepage = () => {
   // set navbar animation
   // ---------------------
   const hasVideoBG = true;
-  const navScrollSection = document.querySelector('.section_home-values')?.className as string;
+  const navScrollSection = document.querySelector('.section_home-hero')?.className as string;
   setTimeout(() => {
     navTransition(navScrollSection, hasVideoBG);
   }, 1000);
