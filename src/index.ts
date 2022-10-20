@@ -17,14 +17,16 @@ window.Webflow.push(() => {
   const menuButtons = querySelectorAlltoArray('.menu_button');
   const pageWrapper = document.querySelector('.main-wrapper');
   const closeButton = document.querySelector('.nav_menu-close');
-  let menuOpen: boolean;
+  let menuOpen = false;
   const menuAnim = menuPopout();
 
   for (let i = 0; i <= menuButtons.length - 1; i++) {
     menuButtons[i].addEventListener('click', (e) => {
-      menuOpen = true;
-      if (menuOpen === true) {
+      menuOpen = !menuOpen;
+      if (menuOpen) {
         menuAnim.play();
+      } else {
+        menuAnim.reverse();
       }
     });
   }
