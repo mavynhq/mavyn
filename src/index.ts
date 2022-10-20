@@ -14,48 +14,36 @@ window.Webflow.push(() => {
 
   // Menu Popout
   // -----------
-  const desktopButton = document.querySelector('#chatButton')?.className as string;
-  const mobileButton = document.querySelector('.nav_icon');
-  const footerButton = document.querySelector('#footerChatButton');
-
   const menuButtons = querySelectorAlltoArray('.menu_button');
-  // let menuOpen = false;
+  const pageWrapper = document.querySelector('.main-wrapper');
+  const closeButton = document.querySelector('.nav_menu-close');
+  let menuOpen: boolean;
   const menuAnim = menuPopout();
 
-  console.log(menuButtons);
-
   for (let i = 0; i <= menuButtons.length - 1; i++) {
-    console.log(menuButtons[i]);
+    menuButtons[i].addEventListener('click', (e) => {
+      console.log('menu clicked');
+      menuOpen = true;
+      if (menuOpen === true) {
+        menuAnim.play();
+      }
+    });
   }
 
-  // menuButton?.addEventListener('click', (e) => {
-  //   menuOpen = !menuOpen;
-  //   if (menuOpen === true) {
-  //     menuAnim.play();
-  //   }
-  // });
+  closeButton?.addEventListener('click', (e) => {
+    menuOpen = false;
+    if (menuOpen === false) {
+      menuAnim.reverse();
+    }
+  });
 
-  // desktopButton?.addEventListener('click', (e) => {
-  //   menuOpen = !menuOpen;
-  //   if (menuOpen === true) {
-  //     menuAnim.play();
-  //   }
-
-  //   console.log(e.target);
-  //   const target = e.target as HTMLElement;
-  // });
-
-  // document.addEventListener('click', (e) => {
-  //   const target = e.target as HTMLElement;
-  //   console.log('click', target);
-
-  //   if (target.closest(desktopButton)) {
-  //     console.log('open menu');
-  //   }
-  //   // if (menuOpen === true) {
-  //   //   menuAnim.reverse();
-  //   // }
-  // });
+  pageWrapper?.addEventListener('click', (e) => {
+    console.log('close menu');
+    menuOpen = false;
+    if (menuOpen === false) {
+      menuAnim.reverse();
+    }
+  });
 
   // ------------------
   // Page Modules
