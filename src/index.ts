@@ -22,7 +22,6 @@ window.Webflow.push(() => {
 
   for (let i = 0; i <= menuButtons.length - 1; i++) {
     menuButtons[i].addEventListener('click', (e) => {
-      console.log('menu clicked');
       menuOpen = true;
       if (menuOpen === true) {
         menuAnim.play();
@@ -38,7 +37,6 @@ window.Webflow.push(() => {
   });
 
   pageWrapper?.addEventListener('click', (e) => {
-    console.log('close menu');
     menuOpen = false;
     if (menuOpen === false) {
       menuAnim.reverse();
