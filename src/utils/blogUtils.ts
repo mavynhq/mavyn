@@ -3,7 +3,7 @@ import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 export const filterBlogList = (blogs: Array<Element>, filters: Array<string>) => {
   const filteredBlog = blogs.filter((e, i) => {
     const blogTemp = blogs[i] as HTMLElement;
-    const blogType = blogTemp.children[1].children[0].innerHTML as string;
+    const blogType = blogTemp.children[0].children[1].children[0].innerHTML as string;
     if (filters.includes(blogType)) {
       return blogTemp;
     }
