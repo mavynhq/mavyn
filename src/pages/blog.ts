@@ -35,7 +35,7 @@ export const blog = () => {
   // get blog filter buttons and all serivces based on blogs posts
   const blogFilters = document.querySelectorAll('.blog-search_item');
   const services = [...blogsMaster].map((obj, i) => {
-    const service = obj.children[1].children[0].innerHTML;
+    const service = obj.children[0].children[1].children[0].innerHTML;
     return service;
   });
   const activeServices = [...new Set(services)];
