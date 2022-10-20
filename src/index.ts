@@ -1,4 +1,5 @@
 import { menuPopout } from '$anim/menuPopout';
+import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 
 import { blog } from './pages/blog';
 import { blogTemplate } from './pages/blogTemplate';
@@ -11,30 +12,50 @@ window.Webflow.push(() => {
   // Site Globals
   // ------------------
 
-  // Mobile Popout
+  // Menu Popout
   // -----------
-  const desktopButton = document.querySelector('#chatButton');
-  const menuButton = document.querySelector('.nav_icon');
-  let menuOpen = false;
+  const desktopButton = document.querySelector('#chatButton')?.className as string;
+  const mobileButton = document.querySelector('.nav_icon');
+  const footerButton = document.querySelector('#footerChatButton');
+
+  const menuButtons = querySelectorAlltoArray('.menu_button');
+  // let menuOpen = false;
   const menuAnim = menuPopout();
 
-  menuButton?.addEventListener('click', (e) => {
-    menuOpen = !menuOpen;
-    if (menuOpen === true) {
-      menuAnim.play();
-    } else {
-      menuAnim.reverse();
-    }
-  });
+  console.log(menuButtons);
 
-  desktopButton?.addEventListener('click', (e) => {
-    menuOpen = !menuOpen;
-    if (menuOpen === true) {
-      menuAnim.play();
-    } else {
-      menuAnim.reverse();
-    }
-  });
+  for (let i = 0; i <= menuButtons.length - 1; i++) {
+    console.log(menuButtons[i]);
+  }
+
+  // menuButton?.addEventListener('click', (e) => {
+  //   menuOpen = !menuOpen;
+  //   if (menuOpen === true) {
+  //     menuAnim.play();
+  //   }
+  // });
+
+  // desktopButton?.addEventListener('click', (e) => {
+  //   menuOpen = !menuOpen;
+  //   if (menuOpen === true) {
+  //     menuAnim.play();
+  //   }
+
+  //   console.log(e.target);
+  //   const target = e.target as HTMLElement;
+  // });
+
+  // document.addEventListener('click', (e) => {
+  //   const target = e.target as HTMLElement;
+  //   console.log('click', target);
+
+  //   if (target.closest(desktopButton)) {
+  //     console.log('open menu');
+  //   }
+  //   // if (menuOpen === true) {
+  //   //   menuAnim.reverse();
+  //   // }
+  // });
 
   // ------------------
   // Page Modules
