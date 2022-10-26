@@ -21,23 +21,22 @@ export const blogTemplate = () => {
   // ------------------
   const blogServiceType = document.querySelector('#blogTemplateService')?.innerHTML as string;
   const ctaSections = querySelectorAlltoArray('.blog_cta-link');
-  let currentCTA: HTMLElement;
 
-  console.log(ctaSections);
+  // console.log(ctaSections);
 
-  console.log('page service type: ', blogServiceType);
+  // console.log('page service type: ', blogServiceType);
 
   for (let i = 0; i <= ctaSections.length - 1; i++) {
     const setCTA = ctaSections[i] as HTMLElement;
     const ctaType = setCTA.children[0].children[1].children[0].children[1].innerHTML as string;
     // console.log('cur cta type: ', ctaType);
 
-    if (ctaType !== blogServiceType) {
-      // console.log('no cta');
-      setCTA.style.display = 'none';
-    } else if (ctaType === blogServiceType) {
-      // console.log('is cta');
+    if (ctaType === blogServiceType) {
+      // console.log('match');
       blogCTAMovement(setCTA);
+    } else if (ctaType !== blogServiceType) {
+      // console.log('no match');
+      setCTA.style.display = 'none';
     }
   }
 };
