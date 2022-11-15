@@ -15,6 +15,10 @@ export const blog = () => {
     navTransition(navScrollSection, hasVideoBG);
   }, 100);
 
+  // ------------------
+  // Blog Filtering
+  // ------------------
+
   // get master blog list
   const blogsMaster = querySelectorAlltoArray('.blogs_item');
   let blogsFiltered: Element[] = [];
@@ -25,10 +29,6 @@ export const blog = () => {
   const totoalItemLimit = 100;
 
   renderBlogUpdate(blogsMaster, pageLimit);
-
-  // ------------------
-  // Blog Filtering
-  // ------------------
 
   // Set Blog Filters
   // ------------------

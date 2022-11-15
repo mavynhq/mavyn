@@ -5,6 +5,7 @@ import { blog } from './pages/blog';
 import { blogTemplate } from './pages/blogTemplate';
 import { homepage } from './pages/home.js';
 import { squeeze } from './pages/squeeze';
+import { thanks } from './pages/thanks';
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
@@ -57,11 +58,12 @@ window.Webflow.push(() => {
     squeeze();
   } else if (windowLocation.includes('/blog')) {
     const hasFurtherIndex = windowLocation.substring(5);
-
     if (hasFurtherIndex === '') {
       blog();
     } else {
       blogTemplate();
     }
+  } else if (windowLocation === '/thank-you') {
+    thanks();
   }
 });
