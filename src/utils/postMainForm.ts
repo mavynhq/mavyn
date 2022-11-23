@@ -21,6 +21,7 @@ export const mainFormPost = (
       parent.children('form').css('display', 'none');
       // Display the "Done" block
       parent.children('.w-form-done').css('display', 'block');
+      window.location.href = 'https://www.mavyn.com/thank-you';
     },
     error: function (req, err) {
       console.log('req', req, 'error', err);
