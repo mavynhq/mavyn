@@ -13,8 +13,6 @@ window.Webflow.push(() => {
   // Site Globals
   // ------------------
 
-  console.log('test');
-
   // Menu Popout
   // -----------
   const menuButtons = querySelectorAlltoArray('.menu_button');
