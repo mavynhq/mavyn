@@ -13,6 +13,8 @@ window.Webflow.push(() => {
   // Site Globals
   // ------------------
 
+  console.log('test');
+
   // Menu Popout
   // -----------
   const menuButtons = querySelectorAlltoArray('.menu_button');
@@ -22,7 +24,7 @@ window.Webflow.push(() => {
   const menuAnim = menuPopout();
 
   for (let i = 0; i <= menuButtons.length - 1; i++) {
-    menuButtons[i].addEventListener('click', (e) => {
+    menuButtons[i].addEventListener('click', () => {
       menuOpen = !menuOpen;
       if (menuOpen) {
         menuAnim.play();
@@ -32,14 +34,14 @@ window.Webflow.push(() => {
     });
   }
 
-  closeButton?.addEventListener('click', (e) => {
+  closeButton?.addEventListener('click', () => {
     menuOpen = false;
     if (menuOpen === false) {
       menuAnim.reverse();
     }
   });
 
-  pageWrapper?.addEventListener('click', (e) => {
+  pageWrapper?.addEventListener('click', () => {
     menuOpen = false;
     if (menuOpen === false) {
       menuAnim.reverse();
