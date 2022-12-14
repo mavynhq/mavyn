@@ -1,4 +1,4 @@
-import { navTransition } from '$anim/navTransition';
+import { navTransition } from '$motion/navTransition';
 
 export const thanks = () => {
   // ------------------

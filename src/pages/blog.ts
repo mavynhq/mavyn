@@ -1,4 +1,4 @@
-import { navTransition } from '$anim/navTransition';
+import { navTransition } from '$motion/navTransition';
 import { filterBlogList, renderBlogUpdate } from '$utils/blogUtils';
 import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 
@@ -39,6 +39,7 @@ export const blog = () => {
     return service;
   });
   const activeServices = [...new Set(services)];
+  console.log(activeServices);
 
   //set active blog filters based on active services
   for (let i = 0; i < blogFilters.length; i++) {
@@ -46,6 +47,7 @@ export const blog = () => {
     if (activeServices.includes(serviceType)) {
     } else {
       const serviceTemp = blogFilters[i] as HTMLElement;
+      console.log('temp', serviceTemp);
       serviceTemp.style.display = 'none';
     }
   }
@@ -66,13 +68,11 @@ export const blog = () => {
       //check filter state
       if (checked === true) {
         //checked, add filter label to active list
-        pageLimit = 18;
         activeFilters.push(filterLabel);
         blogsFiltered = filterBlogList(blogsMaster, activeFilters);
         renderBlogUpdate(blogsFiltered, pageLimit);
       } else {
         //unchecked, remove from active list
-        pageLimit = 18;
         const updatedFilters = activeFilters.filter((item) => item !== filterLabel);
         activeFilters = updatedFilters;
         //check if active filter is now empty
@@ -85,6 +85,44 @@ export const blog = () => {
       }
     });
   }
+
+  // ------------------
+  // Blog Search
+  // ------------------
+  // console.log(filterBlogList);
+  const searchInputElement = document.querySelector('#blogSearchInput') as HTMLInputElement;
+  const searchInputButton = document.querySelector('#blogSearchButton') as HTMLElement;
+
+  // searchInputButton.addEventListener('click', (e) => {
+  //   const searchQuery = searchInputElement.value;
+  //   console.log('Search:', searchQuery);
+  // });
+
+  searchInputElement.addEventListener('input', (e) => {
+    const event = e.target as HTMLInputElement;
+    const searchQuery = event.value.toLowerCase();
+    blogsMaster.forEach((blog) => {
+      const blogDescription =
+        blog.children[0].children[1].children[1].children[2].innerHTML.toLowerCase();
+      console.log(blogDescription);
+
+      const isVisible = blogDescription.includes(searchQuery);
+      blog.classList.toggle('hide', !isVisible);
+    });
+
+    // console.log(blogsMaster);
+  });
+
+  searchInputElement.addEventListener('keypress', (k) => {
+    const keyEvent = k as KeyboardEvent;
+    const keyPressed = keyEvent.key;
+
+    if (keyPressed === 'Enter') {
+      k.preventDefault();
+
+      searchInputButton.click();
+    }
+  });
 
   // ------------------
   // Blog limiting

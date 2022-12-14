@@ -1,10 +1,11 @@
-import { menuPopout } from '$anim/menuPopout';
+import { menuPopout } from '$motion/menuPopout';
 import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 
+import { askGeneral } from './pages/askGeneral';
+import { squeeze } from './pages/askSqueeze';
 import { blog } from './pages/blog';
 import { blogTemplate } from './pages/blogTemplate';
 import { homepage } from './pages/home.js';
-import { squeeze } from './pages/squeeze';
 import { thanks } from './pages/thanks';
 
 window.Webflow ||= [];
@@ -54,7 +55,7 @@ window.Webflow.push(() => {
 
   if (windowLocation === '/') {
     homepage();
-  } else if (windowLocation.includes('/ask')) {
+  } else if (windowLocation.includes('/ask') && !windowLocation.includes('/ask-anything')) {
     squeeze();
   } else if (windowLocation.includes('/blog')) {
     const hasFurtherIndex = windowLocation.substring(5);
@@ -65,5 +66,7 @@ window.Webflow.push(() => {
     }
   } else if (windowLocation === '/thank-you') {
     thanks();
+  } else if (windowLocation === '/ask-anything') {
+    askGeneral();
   }
 });

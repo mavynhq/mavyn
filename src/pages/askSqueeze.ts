@@ -3,7 +3,7 @@ import { stepError } from 'src/motion/chatbotStepError';
 import { updateAnswer } from 'src/motion/chatbotUpdateAnswer';
 import { updateQuestion } from 'src/motion/chatbotUpdateQuestion';
 
-import { navTransition } from '$anim/navTransition';
+import { navTransition } from '$motion/navTransition';
 import { chatbotJSON } from '$utils/generateChatbotJSON';
 import { getChatQuestions } from '$utils/getChatbotQuestions';
 import { chatFormPost } from '$utils/postChatForm';

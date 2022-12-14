@@ -1,5 +1,5 @@
-import { blogCTAMovement } from '$anim/blogCTA';
-import { navTransition } from '$anim/navTransition';
+import { blogCTAMovement } from '$motion/blogCTA';
+import { navTransition } from '$motion/navTransition';
 import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 
 export const blogTemplate = () => {

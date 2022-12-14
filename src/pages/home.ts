@@ -1,3 +1,5 @@
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { formNext } from 'src/motion/bookFomNext';
 import { imageSliderNext } from 'src/motion/imageSliderNext';
 import { imageSliderPrev } from 'src/motion/imageSliderPrev';
@@ -5,11 +7,13 @@ import { preloader } from 'src/motion/preloader';
 import { servicesAnimIn } from 'src/motion/servicesAnimIn';
 import { servicesAnimOut } from 'src/motion/servicesAnimOut';
 
-import { navTransition } from '$anim/navTransition';
+import { navTransition } from '$motion/navTransition';
 import { bookingJSON } from '$utils/generateBookingJSON';
 import { expertJSON } from '$utils/generateExpertJSON';
 import { expertFormPost } from '$utils/postExpertForm';
 import { mainFormPost } from '$utils/postMainForm';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const homepage = () => {
   // ------------------
@@ -57,6 +61,25 @@ export const homepage = () => {
   document.querySelector('#resetMainForm')?.addEventListener('click', () => {
     document.location.reload();
   });
+
+  // ---------------------------
+  // Values image movement
+  // ---------------------------
+  const valuesImage = '.section_home-values';
+  const valueImageContainer = document.querySelector('.home-values_image-wrap');
+
+  setTimeout(() => {
+    const valuesImageTL = gsap.timeline({
+      scrollTrigger: {
+        trigger: valuesImage,
+        start: 'top center',
+        end: 'bottom center',
+        // markers: true,
+        scrub: true,
+      },
+    });
+    valuesImageTL.to(valueImageContainer, { width: '100%' });
+  }, 1000);
 
   // ---------------------------
   // Home Image Slider Animation

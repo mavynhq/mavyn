@@ -10,6 +10,7 @@ export const preloader = () => {
   const orb2 = document.querySelector('.blur-p._02');
 
   const preloadTL = gsap.timeline({ paused: true });
+
   preloadTL.set(preloadWrapper, { display: 'flex' });
   preloadTL.set(pageContent, { opacity: '0' });
 
