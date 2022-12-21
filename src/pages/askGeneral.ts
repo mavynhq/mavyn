@@ -1,5 +1,5 @@
 import { navTransition } from '$motion/navTransition';
-import { generalAskPost, generateChatElement } from '$utils/chatbotUtils';
+import { generalAskPost, generateChatElement, getChatLog } from '$utils/chatbotUtils';
 
 export const askGeneral = () => {
   // ------------------
@@ -16,13 +16,8 @@ export const askGeneral = () => {
   // ------------------
   // Chatbot
   // ------------------
-
-  const aiDelim = 'AI: ';
-  const humanDelim = 'Human: ';
-  const initialMessage = 'Hello, I am an AI design by Mavyn. What can I help you with today?';
-  let chatLog: string = aiDelim + initialMessage + ' ';
-
-  generateChatElement('ai', initialMessage);
+  const initialAIMessage = 'Hello, I am an AI design by Mavyn. What can I help you with today?';
+  generateChatElement('ai', initialAIMessage);
 
   // form submission
   const chatSubmit = document.querySelector('#generalChatSend') as HTMLElement;
@@ -31,13 +26,10 @@ export const askGeneral = () => {
     const humanResponce = chatFormInput.value as string;
 
     generateChatElement('human', humanResponce);
-
-    const updatedChatlog = chatLog + humanDelim + humanResponce + ' ';
-    chatLog = updatedChatlog;
-
     chatFormInput.value = '';
 
-    generalAskPost(humanResponce, chatLog);
+    const chatlog = getChatLog();
+    generalAskPost(humanResponce, chatlog);
   });
 
   // Enter to submit

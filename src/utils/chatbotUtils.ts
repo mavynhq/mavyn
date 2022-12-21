@@ -1,5 +1,18 @@
 import { chatReveal, updateChatPostion } from '$motion/chatbotMotion';
 
+// Chatlog
+let chatLog = 'AI: Hello, I am an AI design by Mavyn. What can I help you with today?';
+
+export const getChatLog = () => {
+  return chatLog;
+};
+
+export const updateChatLog = (input: string) => {
+  chatLog = input;
+  // console.log('updated Chat', chatLog);
+};
+
+// generate chat element
 export const generateChatElement = (type: string, message: string) => {
   const chatParents = document.querySelectorAll('.chatbot-message_container');
   const aiTemplate = chatParents[0];
@@ -23,6 +36,7 @@ export const generateChatElement = (type: string, message: string) => {
   return newElement;
 };
 
+// API Call
 export const generalAskPost = (chatAnswer: string, chatlog: string) => {
   const chatFormElement = document.querySelector('#generalChatForm')
     ?.children[0] as HTMLFormElement;
@@ -33,7 +47,7 @@ export const generalAskPost = (chatAnswer: string, chatlog: string) => {
   };
   const json = JSON.stringify(data);
 
-  function postData(): Promise<Array<string>> {
+  function postData(): Promise<{ answer: string; chat_log: string }> {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: 'POST',
@@ -51,10 +65,14 @@ export const generalAskPost = (chatAnswer: string, chatlog: string) => {
   }
   postData()
     .then((result) => {
-      const message = result[0];
+      // console.log('RESULT ', result);
+      const message = result.answer;
+      const chatLog = result.chat_log;
+      updateChatLog(chatLog);
       generateChatElement('ai', message);
     })
     .catch((error) => {
-      console.log('error', error);
+      // console.log('error', error);
+      generateChatElement('ai', 'We aplogize, there was an error!' + error);
     });
 };
