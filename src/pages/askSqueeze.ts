@@ -1,15 +1,13 @@
-import { clearError } from 'src/motion/chatbotClearError';
-import { stepError } from 'src/motion/chatbotStepError';
-import { updateAnswer } from 'src/motion/chatbotUpdateAnswer';
-import { updateQuestion } from 'src/motion/chatbotUpdateQuestion';
-
+import { chatStepError, chatClearError } from '$motion/chatbotMotion';
 import { navTransition } from '$motion/navTransition';
-import { chatbotJSON } from '$utils/generateChatbotJSON';
-import { getChatQuestions } from '$utils/getChatbotQuestions';
-import { chatFormPost } from '$utils/postChatForm';
+import {
+  getChatQuestions,
+  generateChatElement,
+  generateHubpotJSON,
+  postChatHS,
+} from '$utils/chatbotUtils';
+import { validateEmail, isValidPhoneFormat } from '$utils/chatbotUtils';
 import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
-import { validateEmail } from '$utils/validateEmail';
-import { isValidPhoneFormat } from '$utils/validatePhone';
 
 export const squeeze = () => {
   // ------------------
@@ -17,7 +15,6 @@ export const squeeze = () => {
   // ------------------
 
   // set navbar animation
-  // ---------------------
   const hasVideoBG = true;
   const navScrollSection = document.querySelector('.section_services-hero')?.className as string;
   setTimeout(() => {
@@ -37,9 +34,13 @@ export const squeeze = () => {
   const questions = getChatQuestions();
   const expectedAamount = document.querySelectorAll('.chatbot-message_quesiton.answer').length - 1;
   const answers: string[] = [];
-  const sendButton = document.querySelector('#chatbotSend') as HTMLElement;
 
-  updateQuestion(answers.length - 1);
+  const sendButton = document.querySelector('#chatbotSend') as HTMLElement;
+  const chatInput = document.querySelector('.chatbot_text-area.chatbot') as HTMLInputElement;
+
+  generateChatElement('ai', questions[0].text);
+
+  // updateQuestion(answers.length - 1);
 
   // Autofill first question
   const autoQuestions = querySelectorAlltoArray('.side-collection_item');
@@ -48,11 +49,6 @@ export const squeeze = () => {
     const curAQ = autoQuestions[i] as HTMLElement;
 
     curAQ.addEventListener('click', (e) => {
-      // if (answers.length > 0) {
-      //   console.log('has entered info');
-      // } else {
-      //   console.log('has not entered info');
-      // }
       const clickedElement = e.target as HTMLElement;
       const autofillText = clickedElement.children[0].innerHTML as string;
       const autoFillArea = querySelectorAlltoArray(
@@ -68,33 +64,29 @@ export const squeeze = () => {
   }
 
   // Chatbot send
-  document.querySelector('#chatbotSend')?.addEventListener('click', () => {
+  sendButton.addEventListener('click', () => {
     const answerIndex = answers.length;
     const isEmailQuestion = questions[answerIndex]?.type === 'email';
     const isPhoneQuestion = questions[answerIndex]?.type === 'phone';
     const isPromptQuestion = answerIndex === 0;
 
-    const curFormField = document.querySelectorAll('.chatbot_text-area.chatbot')[
-      answerIndex
-    ] as HTMLInputElement;
-
-    const answerText = curFormField.value.trim();
+    const answerText = chatInput.value.trim();
 
     // checks
     if (isPromptQuestion && answerText.length < PROMPT_MIN_CHARACTERS) {
-      stepError(answerIndex, PROMPT_ERROR_STRING);
+      chatStepError(answerIndex, PROMPT_ERROR_STRING);
       return;
     }
     if (isEmailQuestion && !validateEmail(answerText)) {
-      stepError(answerIndex, EMAIL_ERROR_STRING);
+      chatStepError(answerIndex, EMAIL_ERROR_STRING);
       return;
     }
     if (isPhoneQuestion && !isValidPhoneFormat(answerText)) {
-      stepError(answerIndex, PHONE_ERROR_STRING);
+      chatStepError(answerIndex, PHONE_ERROR_STRING);
       return;
     }
     if ((answerText || '').trim().length === 0) {
-      stepError(answerIndex, PROMPT_ERROR_NO_ANSWER);
+      chatStepError(answerIndex, PROMPT_ERROR_NO_ANSWER);
       return;
     }
 
@@ -105,32 +97,33 @@ export const squeeze = () => {
     }
 
     answers.push(answerText);
-    updateAnswer(answerText, answerIndex);
-    updateQuestion(answerIndex);
-    clearError();
+    generateChatElement('human', answerText);
+    chatInput.value = '';
+
+    setTimeout(() => {
+      generateChatElement('ai', questions[answerIndex + 1].text);
+    }, 1000);
+
+    chatClearError();
   });
 
-  const chatForms = document.querySelectorAll('.chatbot_text-area.chatbot');
-  for (let i = 0; i < chatForms.length; i++) {
-    const curForm = chatForms[i] as HTMLElement;
-    curForm.addEventListener('keypress', (e) => {
-      const keyEvent = e as KeyboardEvent;
-      const keyPressed = keyEvent.key;
-      if (keyPressed === 'Enter') {
-        e.preventDefault();
+  chatInput.addEventListener('keypress', (e) => {
+    const keyEvent = e as KeyboardEvent;
+    const keyPressed = keyEvent.key;
+    if (keyPressed === 'Enter') {
+      e.preventDefault();
 
-        sendButton.click();
-      }
-    });
-  }
+      sendButton.click();
+    }
+  });
 
   const chatbotForm = document.querySelector('#chatbotForm');
   chatbotForm?.addEventListener('submit', (e) => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
-    const chatJSON = chatbotJSON(questions, answers);
+    const chatJSON = generateHubpotJSON(questions, answers);
 
-    chatFormPost(chatJSON, target);
+    postChatHS(chatJSON, target);
   });
 
   // -----------------------------

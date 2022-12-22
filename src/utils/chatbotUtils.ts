@@ -1,6 +1,23 @@
 import { chatReveal, updateChatPostion } from '$motion/chatbotMotion';
 
-// Chatlog
+// -------------------------
+// Static Chatbot Questions
+// -------------------------
+export const getChatQuestions = () => {
+  const questionsList = document.querySelectorAll('.text-size-small.question');
+  const typesList = document.querySelectorAll('.chatbot-message_type');
+
+  const questions = [...questionsList.entries()].map((dataObject, index) => ({
+    text: dataObject[1].innerHTML.replace(/<[^>]*>?/gm, ''),
+    type: typesList[index].innerHTML,
+  }));
+
+  return questions;
+};
+
+// ------------------
+// AI Chatlog
+// ------------------
 let chatLog = 'AI: Hello, I am an AI design by Mavyn. What can I help you with today?';
 
 export const getChatLog = () => {
@@ -12,7 +29,9 @@ export const updateChatLog = (input: string) => {
   // console.log('updated Chat', chatLog);
 };
 
+// ---------------------
 // generate chat element
+// ---------------------
 export const generateChatElement = (type: string, message: string) => {
   const chatParents = document.querySelectorAll('.chatbot-message_container');
   const aiTemplate = chatParents[0];
@@ -36,8 +55,54 @@ export const generateChatElement = (type: string, message: string) => {
   return newElement;
 };
 
-// API Call
-export const generalAskPost = (chatAnswer: string, chatlog: string) => {
+// ------------------------------------------
+// Generate JSON for chatbot post to Hubspot
+// ------------------------------------------
+export const generateHubpotJSON = (
+  questions: {
+    text: string;
+    type: string;
+  }[],
+  answers: string[]
+) => {
+  const data = {
+    slug: document.querySelector('.section-page-tag')?.innerHTML.toLocaleLowerCase(),
+    chatQuestions: questions,
+    answers: answers,
+  };
+
+  const finalData = JSON.stringify(data);
+  return finalData;
+};
+
+// ------------------------
+// Post Chat Data - Hubspot
+// ------------------------
+export const postChatHS = (data: string, target: HTMLFormElement) => {
+  $.ajax({
+    url: target.action,
+    method: 'POST',
+    data: data,
+    contentType: 'application/json',
+    success: function () {
+      const parent = target.parentElement;
+      const formEle = parent?.querySelector('form') as HTMLElement;
+      const wfDone = parent?.querySelector('.w-form-done') as HTMLElement;
+      formEle.style.display = 'none';
+      wfDone.style.display = 'block';
+      window.location.href = 'https://www.mavyn.com/thank-you';
+    },
+    error: function () {
+      // alert('error on the form submitting', data);
+      $(target).css('display', 'none').siblings('.w-form-fail').css('display', 'block');
+    },
+  });
+};
+
+// --------------------
+// Post Chat Data - AI
+// ---------------------
+export const postChatAI = (chatAnswer: string, chatlog: string) => {
   const chatFormElement = document.querySelector('#generalChatForm')
     ?.children[0] as HTMLFormElement;
   const apiEndpoint = chatFormElement.action;
@@ -75,4 +140,26 @@ export const generalAskPost = (chatAnswer: string, chatlog: string) => {
       // console.log('error', error);
       generateChatElement('ai', 'We aplogize, there was an error!' + error);
     });
+};
+
+export const validateEmail = (email: string) => {
+  return /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+    email
+  );
+};
+
+// --------------------
+// Form Checking
+// ---------------------
+export const trimNonDigits = (value: string) => {
+  return value.replace(/[^\d]/g, '');
+};
+
+const MIN_NUMBER_OF_DIGITS = 10;
+const MAX_NUMBER_OF_DIGITS = 11;
+export const isValidPhoneFormat = (phone: string) => {
+  const trimmedNumber = trimNonDigits(phone);
+  return (
+    trimmedNumber.length >= MIN_NUMBER_OF_DIGITS && trimmedNumber.length <= MAX_NUMBER_OF_DIGITS
+  );
 };

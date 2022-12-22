@@ -1,5 +1,5 @@
 import { navTransition } from '$motion/navTransition';
-import { generalAskPost, generateChatElement, getChatLog } from '$utils/chatbotUtils';
+import { postChatAI, generateChatElement, getChatLog } from '$utils/chatbotUtils';
 
 export const askGeneral = () => {
   // ------------------
@@ -29,7 +29,7 @@ export const askGeneral = () => {
     chatFormInput.value = '';
 
     const chatlog = getChatLog();
-    generalAskPost(humanResponce, chatlog);
+    postChatAI(humanResponce, chatlog);
   });
 
   // Enter to submit
