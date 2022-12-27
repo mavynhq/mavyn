@@ -6,6 +6,7 @@ import { squeeze } from './pages/askSqueeze';
 import { blog } from './pages/blog';
 import { blogTemplate } from './pages/blogTemplate';
 import { homepage } from './pages/home.js';
+import { terms } from './pages/terms';
 import { thanks } from './pages/thanks';
 
 window.Webflow ||= [];
@@ -68,5 +69,7 @@ window.Webflow.push(() => {
     thanks();
   } else if (windowLocation === '/ask-anything') {
     askGeneral();
+  } else if (windowLocation === '/terms-of-service') {
+    terms();
   }
 });
