@@ -38,7 +38,7 @@ export const squeeze = () => {
   const sendButton = document.querySelector('#chatbotSend') as HTMLElement;
   const chatInput = document.querySelector('.chatbot_text-area.chatbot') as HTMLInputElement;
 
-  generateChatElement('ai', questions[0].text);
+  generateChatElement('ai', questions[0].text, questions[0].type);
 
   // updateQuestion(answers.length - 1);
 
@@ -97,11 +97,11 @@ export const squeeze = () => {
     }
 
     answers.push(answerText);
-    generateChatElement('human', answerText);
+    generateChatElement('human', answerText, 'answer');
     chatInput.value = '';
 
     setTimeout(() => {
-      generateChatElement('ai', questions[answerIndex + 1].text);
+      generateChatElement('ai', questions[answerIndex + 1].text, questions[answerIndex + 1].type);
     }, 1000);
 
     chatClearError();

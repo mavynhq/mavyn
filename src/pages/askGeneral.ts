@@ -17,7 +17,7 @@ export const askGeneral = () => {
   // Chatbot
   // ------------------
   const initialAIMessage = 'Hello, I am an AI design by Mavyn. What can I help you with today?';
-  generateChatElement('ai', initialAIMessage);
+  generateChatElement('ai', initialAIMessage, 'prompt');
 
   // form submission
   const chatSubmit = document.querySelector('#generalChatSend') as HTMLElement;
@@ -25,7 +25,7 @@ export const askGeneral = () => {
     const chatFormInput = document.querySelector('#generalChatInput') as HTMLInputElement;
     const humanResponce = chatFormInput.value as string;
 
-    generateChatElement('human', humanResponce);
+    generateChatElement('human', humanResponce, 'prompt');
     chatFormInput.value = '';
 
     const chatlog = getChatLog();

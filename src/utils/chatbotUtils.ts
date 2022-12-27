@@ -26,34 +26,48 @@ export const getChatLog = () => {
 
 export const updateChatLog = (input: string) => {
   chatLog = input;
-  // console.log('updated Chat', chatLog);
 };
 
 // ---------------------
 // generate chat element
 // ---------------------
-export const generateChatElement = (type: string, message: string) => {
-  const chatParents = document.querySelectorAll('.chatbot-message_container');
-  const aiTemplate = chatParents[0];
-  const humanTemplate = chatParents[1];
+export const generateChatElement = (uiType: string, message: string, msgType: string) => {
+  let newElement;
 
-  let newElement: HTMLElement = aiTemplate as HTMLElement;
+  if (msgType === 'contact') {
+    newElement = cloneTemplate(msgType);
+  } else {
+    newElement = cloneTemplate(uiType);
+    newElement.children[0].children[0].innerHTML = message;
+  }
 
   const chatArea = document.querySelector('.chatbot_message-component');
+  chatArea?.append(newElement);
+  chatReveal(newElement);
+  updateChatPostion();
+};
+
+function cloneTemplate(type: string) {
+  const aiTemplate = document.querySelector('.chatbot-message_container.question') as HTMLElement;
+  const humanTemplate = document.querySelector(
+    '.chatbot-message_container.response'
+  ) as HTMLElement;
+  const richTextTemplate = document.querySelector(
+    '.chatbot-message_container.is-rich-text'
+  ) as HTMLElement;
+
+  let newElement: HTMLElement = aiTemplate as HTMLElement;
 
   if (type === 'ai') {
     newElement = aiTemplate.cloneNode(true) as HTMLElement;
   } else if (type === 'human') {
     newElement = humanTemplate.cloneNode(true) as HTMLElement;
+  } else if (type === 'contact') {
+    newElement = richTextTemplate.cloneNode(true) as HTMLElement;
   }
 
-  newElement.children[0].children[0].innerHTML = message;
-  chatArea?.append(newElement);
-  chatReveal(newElement);
-  updateChatPostion();
-
   return newElement;
-};
+}
 
 // ------------------------------------------
 // Generate JSON for chatbot post to Hubspot
@@ -134,11 +148,11 @@ export const postChatAI = (chatAnswer: string, chatlog: string) => {
       const message = result.answer;
       const chatLog = result.chat_log;
       updateChatLog(chatLog);
-      generateChatElement('ai', message);
+      generateChatElement('ai', message, 'answer');
     })
     .catch((error) => {
       // console.log('error', error);
-      generateChatElement('ai', 'We aplogize, there was an error!' + error);
+      generateChatElement('ai', 'We aplogize, there was an error!' + error, 'error');
     });
 };
 
