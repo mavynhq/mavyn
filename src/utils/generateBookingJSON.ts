@@ -4,5 +4,7 @@ export const bookingJSON = (form: JQuery<HTMLInputElement>) => {
   $.each(array, function () {
     json[this.name] = this.value || '';
   });
+
+  // console.log(array, json);
   return json;
 };

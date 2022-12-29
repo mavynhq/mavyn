@@ -7,7 +7,6 @@ export const terms = () => {
 
   // set navbar animation
   // ---------------------
-  console.log('terms');
   const hasVideoBG = false;
   const navScrollSection = document.querySelector('.section_thanks-main')?.className as string;
   setTimeout(() => {

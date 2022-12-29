@@ -1,18 +1,20 @@
-import { bookFormWait } from 'src/motion/bookFormWait';
+import { formWait } from '$motion/mainFormMotion';
 
 export const mainFormPost = (
   form: JQuery<HTMLInputElement>,
   endpoint: string,
   formData: { [key: string]: string }
 ) => {
+  const data = JSON.stringify(formData);
+  // console.log('DATA OLD', data);
   $.ajax({
     url: endpoint,
     method: 'POST',
-    data: JSON.stringify(formData),
+    data: data,
     contentType: 'application/json',
     dataType: 'json',
     beforeSend: function () {
-      const waitTimeline = bookFormWait();
+      const waitTimeline = formWait();
       waitTimeline.play();
     },
     success: function () {

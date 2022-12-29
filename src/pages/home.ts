@@ -1,17 +1,17 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { formNext } from 'src/motion/bookFomNext';
-import { imageSliderNext } from 'src/motion/imageSliderNext';
-import { imageSliderPrev } from 'src/motion/imageSliderPrev';
-import { preloader } from 'src/motion/preloader';
-import { servicesAnimIn } from 'src/motion/servicesAnimIn';
-import { servicesAnimOut } from 'src/motion/servicesAnimOut';
 
+import { imageSliderNext, imageSliderPrev } from '$motion/imageSliderMotion';
+import { formNext, openDropdown, closeDropdown } from '$motion/mainFormMotion';
 import { navTransition } from '$motion/navTransition';
+import { preloader } from '$motion/preloader';
+import { servicesAnimIn, servicesAnimOut } from '$motion/servicesAccordianMotion';
 import { bookingJSON } from '$utils/generateBookingJSON';
 import { expertJSON } from '$utils/generateExpertJSON';
+import { convertFormData, postFormData } from '$utils/mainFormUtils';
 import { expertFormPost } from '$utils/postExpertForm';
 import { mainFormPost } from '$utils/postMainForm';
+import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,6 +36,28 @@ export const homepage = () => {
   // ----------------
   // Main Form Slider
   // ----------------
+
+  // Form dropdown functionality
+  const expertTypes = querySelectorAlltoArray('.booking-form_item');
+  const expertTypeInput = document.querySelector('#bFormExpertType') as HTMLInputElement;
+
+  for (let i = 0; i < expertTypes.length; i++) {
+    const temp = expertTypes[i] as HTMLElement;
+    temp.addEventListener('click', (e) => {
+      const closeDrop = closeDropdown();
+      closeDrop.play();
+
+      const target = e.target as HTMLElement;
+      const selectionText = target.children[1].innerHTML;
+      expertTypeInput.value = selectionText;
+    });
+  }
+
+  document.querySelector('.slider_dropdown-wrap')?.addEventListener('click', (e) => {
+    const openDrop = openDropdown();
+    openDrop.play();
+  });
+
   //Form progression animation
   const formTimeline = formNext();
   document.querySelector('#bookFormNext')?.addEventListener('click', () => {
@@ -49,12 +71,10 @@ export const homepage = () => {
   const bookingForm = document.querySelector('#wf-form-bookingForm');
   bookingForm?.addEventListener('submit', (e) => {
     e.preventDefault();
-    const target = e.target as HTMLInputElement;
-    const formElement = $(target);
-    const formData = bookingJSON(formElement);
-    const apiEndpoint = bookingForm.getAttribute('action') as string;
+    const form = e.target as HTMLFormElement;
+    const data = convertFormData(form);
 
-    mainFormPost(formElement, apiEndpoint, formData);
+    postFormData(data, form);
   });
 
   // Form reset

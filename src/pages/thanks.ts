@@ -12,6 +12,4 @@ export const thanks = () => {
   setTimeout(() => {
     navTransition(navScrollSection, hasVideoBG);
   }, 100);
-
-  console.log('thanks');
 };
