@@ -4,8 +4,8 @@ import { chatReveal, updateChatPostion } from '$motion/chatbotMotion';
 // Static Chatbot Questions
 // -------------------------
 export const getChatQuestions = () => {
-  const questionsList = document.querySelectorAll('.text-size-small.question');
-  const typesList = document.querySelectorAll('.chatbot-message_type');
+  const questionsList = document.querySelectorAll('.questions_text');
+  const typesList = document.querySelectorAll('.questions_type');
 
   const questions = [...questionsList.entries()].map((dataObject, index) => ({
     text: dataObject[1].innerHTML.replace(/<[^>]*>?/gm, ''),
@@ -18,14 +18,33 @@ export const getChatQuestions = () => {
 // ------------------
 // AI Chatlog
 // ------------------
-let chatLog = 'AI: Hello, I am an AI design by Mavyn. What can I help you with today?';
-
-export const getChatLog = () => {
-  return chatLog;
+const sessionImage: string[] = [];
+const ledger = {
+  chatLog: 'AI: Hello, I am an AI design by Mavyn. What can I help you with today?',
+  id: 0,
+  seqnum: 0,
+  image: 0,
 };
 
-export const updateChatLog = (input: string) => {
-  chatLog = input;
+export const getLedger = () => {
+  return ledger;
+};
+
+export const updateLedger = (input: {
+  answer: string;
+  chat_log: string;
+  id: number;
+  image: number;
+  seqnum: number;
+}) => {
+  ledger.chatLog = input.chat_log;
+  ledger.id = input.id;
+  ledger.seqnum = input.seqnum;
+  ledger.image = input.image;
+
+  if (ledger.image === 1) {
+    sessionImage.push(input.answer);
+  }
 };
 
 // ---------------------
@@ -40,7 +59,16 @@ export const generateChatElement = (uiType: string, message: string, msgType: st
     newElement = cloneTemplate(uiType);
     newElement.children[0].children[0].innerHTML = message;
   }
+  if (message.includes('https')) {
+    const imgSrc = sessionImage[sessionImage.length - 1];
+    const imgObj = document.createElement('img');
+    imgObj.src = imgSrc;
+    imgObj.classList.add('ai_image');
 
+    newElement = cloneTemplate('contact');
+    newElement.children[0].children[0].append(imgObj);
+  }
+  // console.log('NE', newElement);
   const chatArea = document.querySelector('.chatbot_message-component');
   chatArea?.append(newElement);
   chatReveal(newElement);
@@ -48,9 +76,11 @@ export const generateChatElement = (uiType: string, message: string, msgType: st
 };
 
 function cloneTemplate(type: string) {
-  const aiTemplate = document.querySelector('.chatbot-message_container.question') as HTMLElement;
+  const aiTemplate = document.querySelector(
+    '.chatbot-message_container.is-question'
+  ) as HTMLElement;
   const humanTemplate = document.querySelector(
-    '.chatbot-message_container.response'
+    '.chatbot-message_container.is-response'
   ) as HTMLElement;
   const richTextTemplate = document.querySelector(
     '.chatbot-message_container.is-rich-text'
@@ -66,6 +96,7 @@ function cloneTemplate(type: string) {
     newElement = richTextTemplate.cloneNode(true) as HTMLElement;
   }
 
+  // console.log(newElement);
   return newElement;
 }
 
@@ -116,17 +147,25 @@ export const postChatHS = (data: string, target: HTMLFormElement) => {
 // --------------------
 // Post Chat Data - AI
 // ---------------------
-export const postChatAI = (chatAnswer: string, chatlog: string) => {
+export const postChatAI = (chatAnswer: string) => {
   const chatFormElement = document.querySelector('#generalChatForm')
     ?.children[0] as HTMLFormElement;
   const apiEndpoint = chatFormElement.action;
   const data = {
     question: chatAnswer,
-    chatLog: chatlog,
+    chatLog: ledger.chatLog,
+    id: ledger.id,
+    seqnum: ledger.seqnum,
   };
   const json = JSON.stringify(data);
 
-  function postData(): Promise<{ answer: string; chat_log: string }> {
+  function postData(): Promise<{
+    answer: string;
+    chat_log: string;
+    id: number;
+    image: number;
+    seqnum: number;
+  }> {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: 'POST',
@@ -145,10 +184,9 @@ export const postChatAI = (chatAnswer: string, chatlog: string) => {
   postData()
     .then((result) => {
       // console.log('RESULT ', result);
-      const message = result.answer;
-      const chatLog = result.chat_log;
-      updateChatLog(chatLog);
-      generateChatElement('ai', message, 'answer');
+      const rMessage = result.answer;
+      updateLedger(result);
+      generateChatElement('ai', rMessage, 'answer');
     })
     .catch((error) => {
       // console.log('error', error);
@@ -171,6 +209,7 @@ export const trimNonDigits = (value: string) => {
 
 const MIN_NUMBER_OF_DIGITS = 10;
 const MAX_NUMBER_OF_DIGITS = 11;
+
 export const isValidPhoneFormat = (phone: string) => {
   const trimmedNumber = trimNonDigits(phone);
   return (

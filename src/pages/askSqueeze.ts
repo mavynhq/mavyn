@@ -32,8 +32,10 @@ export const squeeze = () => {
   const PROMPT_ERROR_NO_ANSWER = 'Please provide response to continue';
 
   const questions = getChatQuestions();
-  const expectedAamount = document.querySelectorAll('.chatbot-message_quesiton.answer').length - 1;
+  const expectedAamount = questions.length - 2;
   const answers: string[] = [];
+
+  // console.log('QS', questions);
 
   const sendButton = document.querySelector('#chatbotSend') as HTMLElement;
   const chatInput = document.querySelector('.chatbot_text-area.chatbot') as HTMLInputElement;

@@ -4,11 +4,12 @@ import { gsap } from 'gsap';
 // Reveal new chat element
 // -----------------------
 export const chatReveal = (element: HTMLElement) => {
-  const chatElement = element.children[0];
+  const chatElement = element;
+  // console.log(chatElement);
 
   const revealTL = gsap.timeline();
-  revealTL.to(chatElement, { duration: 0.6, opacity: 1, display: 'block', ease: 'power4.inOut' });
-  revealTL.from(chatElement, { duration: 0.6, y: '1rem', ease: 'power4.inOut' }, '<');
+  revealTL.to(chatElement, { duration: 0.6, display: 'flex', ease: 'power4.inOut' });
+  revealTL.from(chatElement, { duration: 0.6, y: '1rem', opacity: 0, ease: 'power4.inOut' }, '<');
 };
 
 export const updateChatPostion = () => {
