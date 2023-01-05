@@ -21,35 +21,33 @@ export const blog = () => {
 
   // get master blog list
   const blogsMaster = querySelectorAlltoArray('.blogs_item');
-  let blogsFiltered: Element[] = [];
+  let blogsRenderList: Element[] = [];
 
   //set blog limit
   const pageStepSize = 18;
   let pageLimit = 18;
   const totoalItemLimit = 100;
 
-  renderBlogUpdate(blogsMaster, pageLimit);
+  blogsRenderList = blogsMaster;
+  renderBlogUpdate(blogsRenderList, pageLimit);
 
   // Set Blog Filters
   // ------------------
   // get blog filter buttons and all serivces based on blogs posts
-  const blogFilters = document.querySelectorAll('.blog-search_item');
-  const services = [...blogsMaster].map((obj, i) => {
+  const blogFilters = querySelectorAlltoArray('.blog-filters_item');
+  const allBlogServices = [...blogsMaster].map((obj) => {
     const service = obj.children[0].children[1].children[0].innerHTML;
     return service;
   });
-  const activeServices = [...new Set(services)];
-  console.log(activeServices);
+  const activeServices = [...new Set(allBlogServices)];
 
   //set active blog filters based on active services
   for (let i = 0; i < blogFilters.length; i++) {
-    const serviceType = blogFilters[i].children[0].children[3].innerHTML;
-    if (activeServices.includes(serviceType)) {
-    } else {
-      const serviceTemp = blogFilters[i] as HTMLElement;
-      console.log('temp', serviceTemp);
-      serviceTemp.style.display = 'none';
-    }
+    const serviceObj = blogFilters[i];
+    const serviceType = serviceObj.children[0].children[3].innerHTML;
+
+    const isVisible = activeServices.includes(serviceType);
+    serviceObj.classList.toggle('hide', !isVisible);
   }
 
   // Filter blog items
@@ -59,28 +57,29 @@ export const blog = () => {
 
   for (let i = 0; i < filterCheckboxes.length; i++) {
     let checked = false;
-    // add click event to all filter buttons
     filterCheckboxes[i].addEventListener('change', (e) => {
       checked = !checked;
-      //get label to changed filter button
       const eventTarget = e.target as HTMLElement;
       const filterLabel = eventTarget.parentElement?.children[3].innerHTML as string;
-      //check filter state
+
+      blogsRenderList = blogsMaster;
+
       if (checked === true) {
-        //checked, add filter label to active list
         activeFilters.push(filterLabel);
-        blogsFiltered = filterBlogList(blogsMaster, activeFilters);
-        renderBlogUpdate(blogsFiltered, pageLimit);
+
+        const tempList = filterBlogList(blogsRenderList, activeFilters);
+        blogsRenderList = tempList;
+        renderBlogUpdate(blogsRenderList, pageLimit);
       } else {
-        //unchecked, remove from active list
         const updatedFilters = activeFilters.filter((item) => item !== filterLabel);
         activeFilters = updatedFilters;
-        //check if active filter is now empty
+
         if (activeFilters.length < 1) {
-          renderBlogUpdate(blogsMaster, pageLimit);
+          renderBlogUpdate(blogsRenderList, pageLimit);
         } else {
-          blogsFiltered = filterBlogList(blogsMaster, activeFilters);
-          renderBlogUpdate(blogsFiltered, pageLimit);
+          const tempList = filterBlogList(blogsRenderList, activeFilters);
+          blogsRenderList = tempList;
+          renderBlogUpdate(blogsRenderList, pageLimit);
         }
       }
     });
@@ -93,22 +92,18 @@ export const blog = () => {
   const searchInputElement = document.querySelector('#blogSearchInput') as HTMLInputElement;
   const searchInputButton = document.querySelector('#blogSearchButton') as HTMLElement;
 
-  // searchInputButton.addEventListener('click', (e) => {
-  //   const searchQuery = searchInputElement.value;
-  //   console.log('Search:', searchQuery);
-  // });
-
   searchInputElement.addEventListener('input', (e) => {
+    console.log('search render list');
     const event = e.target as HTMLInputElement;
     const searchQuery = event.value.toLowerCase();
-    blogsMaster.forEach((blog) => {
-      const blogDescription =
-        blog.children[0].children[1].children[1].children[2].innerHTML.toLowerCase();
-      console.log(blogDescription);
+    // blogsRenderList.forEach((blog) => {
+    //   const blogDescription =
+    //     blog.children[0].children[1].children[1].children[2].innerHTML.toLowerCase();
+    //   console.log(blogDescription);
 
-      const isVisible = blogDescription.includes(searchQuery);
-      blog.classList.toggle('hide', !isVisible);
-    });
+    //   // const isVisible = blogDescription.includes(searchQuery);
+    //   // blog.classList.toggle('hide', !isVisible);
+    // });
 
     // console.log(blogsMaster);
   });
@@ -119,7 +114,6 @@ export const blog = () => {
 
     if (keyPressed === 'Enter') {
       k.preventDefault();
-
       searchInputButton.click();
     }
   });
@@ -138,8 +132,9 @@ export const blog = () => {
       }
     }
     if (activeFilters.length > 0) {
-      renderBlogUpdate(blogsFiltered, pageLimit);
+      renderBlogUpdate(blogsRenderList, pageLimit);
     } else {
+      blogsRenderList = blogsMaster;
       renderBlogUpdate(blogsMaster, pageLimit);
     }
   });
