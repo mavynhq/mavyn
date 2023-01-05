@@ -3,6 +3,7 @@ import { chatReveal, updateChatPostion } from '$motion/chatbotMotion';
 // -------------------------
 // Static Chatbot Questions
 // -------------------------
+// test
 export const getChatQuestions = () => {
   const questionsList = document.querySelectorAll('.questions_text');
   const typesList = document.querySelectorAll('.questions_type');
