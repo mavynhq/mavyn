@@ -91,21 +91,24 @@ export const blog = () => {
   // console.log(filterBlogList);
   const searchInputElement = document.querySelector('#blogSearchInput') as HTMLInputElement;
   const searchInputButton = document.querySelector('#blogSearchButton') as HTMLElement;
+  let searchQuery: string;
 
   searchInputElement.addEventListener('input', (e) => {
-    console.log('search render list');
+    // console.log('search render list');
     const event = e.target as HTMLInputElement;
-    const searchQuery = event.value.toLowerCase();
-    // blogsRenderList.forEach((blog) => {
-    //   const blogDescription =
-    //     blog.children[0].children[1].children[1].children[2].innerHTML.toLowerCase();
-    //   console.log(blogDescription);
+    searchQuery = event.value.toLowerCase();
+    const searchList: Element[] = [];
 
-    //   // const isVisible = blogDescription.includes(searchQuery);
-    //   // blog.classList.toggle('hide', !isVisible);
-    // });
+    blogsRenderList.forEach((blog) => {
+      const blogDescription =
+        blog.children[0].children[1].children[1].children[2].innerHTML.toLowerCase();
+      // console.log(blogDescription);
 
-    // console.log(blogsMaster);
+      if (blogDescription.includes(searchQuery)) {
+        searchList.push(blog);
+        renderBlogUpdate(searchList, pageLimit);
+      }
+    });
   });
 
   searchInputElement.addEventListener('keypress', (k) => {
@@ -116,6 +119,14 @@ export const blog = () => {
       k.preventDefault();
       searchInputButton.click();
     }
+  });
+
+  // Clear search query
+  const clearButton = document.querySelector('#searchClear') as HTMLElement;
+  clearButton?.addEventListener('click', (e) => {
+    searchQuery = '';
+    searchInputElement.value = '';
+    renderBlogUpdate(blogsRenderList, pageLimit);
   });
 
   // ------------------

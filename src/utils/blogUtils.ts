@@ -14,7 +14,7 @@ export const filterBlogList = (blogs: Element[], filters: Array<string>) => {
 // export const searchBlogList = (blogs: Element[], query: string) => {};
 
 export const hideAll = () => {
-  console.log('hide all');
+  // console.log('hide all');
   const blogsMaster = querySelectorAlltoArray('.blogs_item');
   for (const item of blogsMaster) {
     item.classList.add('hide');
@@ -23,7 +23,7 @@ export const hideAll = () => {
 };
 
 export const renderBlogUpdate = (blogs: Element[], limit: number) => {
-  console.log('limit', limit);
+  // console.log('limit', limit);
   const loadButton = document.querySelector('#blogLoadButton') as HTMLElement;
   const nextpageButton = document.querySelector('.blog-search_pagation') as HTMLElement;
   hideAll();
