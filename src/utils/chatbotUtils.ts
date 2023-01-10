@@ -3,12 +3,11 @@ import { chatReveal, updateChatPostion } from '$motion/chatbotMotion';
 // -------------------------
 // Static Chatbot Questions
 // -------------------------
-// test
 export const getChatQuestions = () => {
-  const questionsList = document.querySelectorAll('.questions_text');
+  const questionList = document.querySelectorAll('.questions_text');
   const typesList = document.querySelectorAll('.questions_type');
 
-  const questions = [...questionsList.entries()].map((dataObject, index) => ({
+  const questions = [...questionList.entries()].map((dataObject, index) => ({
     text: dataObject[1].innerHTML.replace(/<[^>]*>?/gm, ''),
     type: typesList[index].innerHTML,
   }));
@@ -86,6 +85,9 @@ function cloneTemplate(type: string) {
   const richTextTemplate = document.querySelector(
     '.chatbot-message_container.is-rich-text'
   ) as HTMLElement;
+  const buttonTemplate = document.querySelector(
+    '.chatbot-message_container.has-buttons'
+  ) as HTMLElement;
 
   let newElement: HTMLElement = aiTemplate as HTMLElement;
 
@@ -93,11 +95,25 @@ function cloneTemplate(type: string) {
     newElement = aiTemplate.cloneNode(true) as HTMLElement;
   } else if (type === 'human') {
     newElement = humanTemplate.cloneNode(true) as HTMLElement;
-  } else if (type === 'contact') {
+  } else if (type === 'rich') {
     newElement = richTextTemplate.cloneNode(true) as HTMLElement;
-  }
+  } else if (type === 'contact') {
+    newElement = buttonTemplate.cloneNode(true) as HTMLElement;
+    const selectElements = newElement.children[1].children[0].children;
+    const chatInput = document.querySelector('.chatbot_text-area.chatbot') as HTMLInputElement;
+    const sendButton = document.querySelector('#chatbotSend') as HTMLElement;
 
-  // console.log(newElement);
+    for (let i = 0; i < selectElements.length; i++) {
+      const temp = selectElements[i] as HTMLElement;
+      temp.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const valuePass = target.children[0].innerHTML;
+
+        chatInput.value = valuePass;
+        sendButton.click();
+      });
+    }
+  }
   return newElement;
 }
 
