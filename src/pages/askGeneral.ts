@@ -1,5 +1,5 @@
 import { navTransition } from '$motion/navTransition';
-import { postChatAI, generateChatElement } from '$utils/chatbotUtils';
+import { aiChatbot } from '$utils/chatbot';
 
 export const askGeneral = () => {
   // ------------------
@@ -16,29 +16,5 @@ export const askGeneral = () => {
   // ------------------
   // Chatbot
   // ------------------
-  const initialAIMessage = 'Hello, I am an AI design by Mavyn. What can I help you with today?';
-  generateChatElement('ai', initialAIMessage, 'prompt');
-
-  // form submission
-  const chatSubmit = document.querySelector('#generalChatSend') as HTMLElement;
-  chatSubmit?.addEventListener('click', () => {
-    const chatFormInput = document.querySelector('#generalChatInput') as HTMLInputElement;
-    const humanResponce = chatFormInput.value as string;
-
-    generateChatElement('human', humanResponce, 'prompt');
-    chatFormInput.value = '';
-
-    postChatAI(humanResponce);
-  });
-
-  // Enter to submit
-  document.querySelector('#generalChatInput')?.addEventListener('keypress', (e) => {
-    const keyEvent = e as KeyboardEvent;
-    const keyPressed = keyEvent.key;
-    if (keyPressed === 'Enter') {
-      e.preventDefault();
-
-      chatSubmit.click();
-    }
-  });
+  aiChatbot();
 };

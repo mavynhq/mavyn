@@ -6,13 +6,14 @@ import {
   isValidPhoneFormat,
   generateHubpotJSON,
   postChatHS,
+  postChatAI,
 } from '$utils/chatbotUtils';
 import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 
+// ---------------
+// Hubspot Chatbot
+// ---------------
 export const chatbot = () => {
-  // ----------------------
-  // Chatbot
-  // ----------------------
   const PROMPT_MIN_CHARACTERS = 10;
   const EMAIL_ERROR_STRING =
     'Please enter a valid email address. Use the format example@test.com without any other characters.';
@@ -25,7 +26,7 @@ export const chatbot = () => {
   const answers: string[] = [];
 
   const sendButton = document.querySelector('#chatbotSend') as HTMLElement;
-  const chatInput = document.querySelector('.chatbot_text-area.chatbot') as HTMLInputElement;
+  const chatInput = document.querySelector('#chatInput') as HTMLInputElement;
 
   generateChatElement('ai', questions[0].text, questions[0].type);
 
@@ -90,19 +91,52 @@ export const chatbot = () => {
     if (answerIndex === expectedAamount) {
       answers.push(answerText);
       generateChatElement('human', answerText, 'phone');
+
       const contactType = answers[2];
 
       if (contactType === 'AI Chat') {
-        const contactUI = generateChatElement(
-          'contact',
-          'Do you wish to continue with AI',
-          'prompt'
-        );
-        // console.log('UI', contactUI);
-      }
+        chatInput.value = '';
+        let contactUI: HTMLElement;
+        setTimeout(() => {
+          contactUI = generateChatElement(
+            'contact',
+            'Do you wish to continue with AI',
+            'prompt'
+          ) as HTMLElement;
 
-      const submitChat = document.querySelector('#chatbotSubmit') as HTMLElement;
-      submitChat.click();
+          const buttonElements = contactUI.children[1].children[0].childNodes;
+
+          for (let i = 0; i < buttonElements.length; i++) {
+            const temp = buttonElements[i] as HTMLElement;
+
+            if (i === 0) {
+              temp.children[0].innerHTML = 'Yes';
+            } else if (i === 1) {
+              temp.children[0].innerHTML = 'No';
+            } else {
+              temp.style.display = 'none';
+            }
+
+            temp.addEventListener('click', (e) => {
+              console.log('click', e.target);
+              const buttonClicked = e.target as HTMLElement;
+              const buttonText = buttonClicked.children[0].innerHTML;
+
+              console.log('button text', buttonText);
+
+              if (buttonText === 'Yes') {
+                console.log('load AI Chat');
+              } else {
+                console.log('submit normal');
+              }
+            });
+          }
+        }, 1000);
+      } else {
+        console.log('submit normal');
+        const submitChat = document.querySelector('#chatbotSubmit') as HTMLElement;
+        //   submitChat.click();
+      }
     }
 
     chatClearError();
@@ -125,5 +159,36 @@ export const chatbot = () => {
     const chatJSON = generateHubpotJSON(questions, answers);
 
     postChatHS(chatJSON, target);
+  });
+};
+
+// ---------------
+// AI Chatbot
+// ---------------
+export const aiChatbot = () => {
+  const initialAIMessage = 'Hello, I am an AI design by Mavyn. What can I help you with today?';
+  generateChatElement('ai', initialAIMessage, 'prompt');
+
+  // form submission
+  const chatSubmit = document.querySelector('#chatbotSend') as HTMLElement;
+  chatSubmit?.addEventListener('click', () => {
+    const chatFormInput = document.querySelector('#chatInput') as HTMLInputElement;
+    const humanResponce = chatFormInput.value as string;
+
+    generateChatElement('human', humanResponce, 'prompt');
+    chatFormInput.value = '';
+
+    postChatAI(humanResponce);
+  });
+
+  // Enter to submit
+  document.querySelector('#chatInput')?.addEventListener('keypress', (e) => {
+    const keyEvent = e as KeyboardEvent;
+    const keyPressed = keyEvent.key;
+    if (keyPressed === 'Enter') {
+      e.preventDefault();
+
+      chatSubmit.click();
+    }
   });
 };

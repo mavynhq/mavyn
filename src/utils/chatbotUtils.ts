@@ -65,7 +65,7 @@ export const generateChatElement = (uiType: string, message: string, msgType: st
     imgObj.src = imgSrc;
     imgObj.classList.add('ai_image');
 
-    newElement = cloneTemplate('contact');
+    newElement = cloneTemplate('rich');
     newElement.children[0].children[0].append(imgObj);
   }
   // console.log('NE', newElement);
@@ -73,6 +73,8 @@ export const generateChatElement = (uiType: string, message: string, msgType: st
   chatArea?.append(newElement);
   chatReveal(newElement);
   updateChatPostion();
+
+  return newElement;
 };
 
 function cloneTemplate(type: string) {
