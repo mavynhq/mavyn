@@ -133,9 +133,9 @@ export const chatbot = () => {
           }
         }, 1000);
       } else {
-        console.log('submit normal');
+        // console.log('submit normal');
         const submitChat = document.querySelector('#chatbotSubmit') as HTMLElement;
-        //   submitChat.click();
+        submitChat.click();
       }
     }
 
