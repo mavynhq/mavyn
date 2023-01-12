@@ -7,6 +7,8 @@ import {
   generateHubpotJSON,
   postChatHS,
   postChatAI,
+  executeChatSwitch,
+  timeout,
 } from '$utils/chatbotUtils';
 import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 
@@ -24,8 +26,9 @@ export const chatbot = () => {
   const questions = getChatQuestions();
   const expectedAamount = questions.length - 2;
   const answers: string[] = [];
+  let useAIChat = false;
 
-  const sendButton = document.querySelector('#chatbotSend') as HTMLElement;
+  const chatSend = document.querySelector('#chatbotSend') as HTMLElement;
   const chatInput = document.querySelector('#chatInput') as HTMLInputElement;
 
   generateChatElement('ai', questions[0].text, questions[0].type);
@@ -46,13 +49,13 @@ export const chatbot = () => {
       autoFillArea.value = autofillText;
 
       if (answers.length === 0) {
-        sendButton.click();
+        chatSend.click();
       }
     });
   }
 
   // Chatbot send
-  sendButton.addEventListener('click', () => {
+  chatSend.addEventListener('click', async () => {
     const answerIndex = answers.length;
     const isEmailQuestion = questions[answerIndex]?.type === 'email';
     const isPhoneQuestion = questions[answerIndex]?.type === 'phone';
@@ -93,48 +96,55 @@ export const chatbot = () => {
       generateChatElement('human', answerText, 'phone');
 
       const contactType = answers[2];
+      const submitChat = document.querySelector('#chatbotSubmit') as HTMLElement;
 
       if (contactType === 'AI Chat') {
         chatInput.value = '';
-        let contactUI: HTMLElement;
-        setTimeout(() => {
-          contactUI = generateChatElement(
-            'contact',
-            'Do you wish to continue with AI',
-            'prompt'
-          ) as HTMLElement;
+        // let contactUI: HTMLElement;
+        await timeout(1000);
+        const contactUI = generateChatElement(
+          'contact',
+          'Do you wish to continue with AI',
+          'prompt'
+        ) as HTMLElement;
 
-          const buttonElements = contactUI.children[1].children[0].childNodes;
+        const buttonElements = contactUI.children[1].children[0].childNodes;
 
-          for (let i = 0; i < buttonElements.length; i++) {
-            const temp = buttonElements[i] as HTMLElement;
+        for (let i = 0; i < buttonElements.length; i++) {
+          const temp = buttonElements[i] as HTMLElement;
 
-            if (i === 0) {
-              temp.children[0].innerHTML = 'Yes';
-            } else if (i === 1) {
-              temp.children[0].innerHTML = 'No';
-            } else {
-              temp.style.display = 'none';
-            }
-
-            temp.addEventListener('click', (e) => {
-              console.log('click', e.target);
-              const buttonClicked = e.target as HTMLElement;
-              const buttonText = buttonClicked.children[0].innerHTML;
-
-              console.log('button text', buttonText);
-
-              if (buttonText === 'Yes') {
-                console.log('load AI Chat');
-              } else {
-                console.log('submit normal');
-              }
-            });
+          if (i === 0) {
+            temp.children[0].innerHTML = 'Yes';
+          } else if (i === 1) {
+            temp.children[0].innerHTML = 'No';
+          } else {
+            temp.style.display = 'none';
           }
-        }, 1000);
+
+          temp.addEventListener('click', async (e) => {
+            const buttonClicked = e.target as HTMLElement;
+            const buttonText = buttonClicked.children[0].innerHTML;
+
+            if (buttonText === 'Yes') {
+              useAIChat = true;
+              executeChatSwitch();
+              await timeout(1000);
+              aiChatbot();
+
+              submitChat.click();
+
+              const autoFillText = answers[0] as string;
+              const aiInput = document.querySelector('#aiChatInput') as HTMLInputElement;
+              aiInput.value = autoFillText;
+              chatSend.click();
+            } else {
+              chatInput.value = '';
+              submitChat.click();
+            }
+          });
+        }
       } else {
         // console.log('submit normal');
-        const submitChat = document.querySelector('#chatbotSubmit') as HTMLElement;
         submitChat.click();
       }
     }
@@ -148,7 +158,7 @@ export const chatbot = () => {
     if (keyPressed === 'Enter') {
       e.preventDefault();
 
-      sendButton.click();
+      chatSend.click();
     }
   });
 
@@ -158,7 +168,11 @@ export const chatbot = () => {
     const target = e.target as HTMLFormElement;
     const chatJSON = generateHubpotJSON(questions, answers);
 
-    postChatHS(chatJSON, target);
+    if (useAIChat === true) {
+      postChatHS(chatJSON, target, useAIChat);
+    } else if (useAIChat === false) {
+      postChatHS(chatJSON, target, useAIChat);
+    }
   });
 };
 
@@ -169,26 +183,28 @@ export const aiChatbot = () => {
   const initialAIMessage = 'Hello, I am an AI design by Mavyn. What can I help you with today?';
   generateChatElement('ai', initialAIMessage, 'prompt');
 
+  const chatSend = document.querySelector('#chatbotSend') as HTMLElement;
+  const chatInput = document.querySelector('#aiChatInput') as HTMLInputElement;
+
   // form submission
-  const chatSubmit = document.querySelector('#chatbotSend') as HTMLElement;
-  chatSubmit?.addEventListener('click', () => {
-    const chatFormInput = document.querySelector('#chatInput') as HTMLInputElement;
-    const humanResponce = chatFormInput.value as string;
+  chatSend?.addEventListener('click', () => {
+    // const chatFormInput = document.querySelector('#chatInput') as HTMLInputElement;
+    const humanResponce = chatInput.value as string;
 
     generateChatElement('human', humanResponce, 'prompt');
-    chatFormInput.value = '';
+    chatInput.value = '';
 
     postChatAI(humanResponce);
   });
 
   // Enter to submit
-  document.querySelector('#chatInput')?.addEventListener('keypress', (e) => {
+  document.querySelector('#aiChatInput')?.addEventListener('keypress', (e) => {
     const keyEvent = e as KeyboardEvent;
     const keyPressed = keyEvent.key;
     if (keyPressed === 'Enter') {
       e.preventDefault();
 
-      chatSubmit.click();
+      chatSend.click();
     }
   });
 };

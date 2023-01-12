@@ -12,6 +12,9 @@ export const chatReveal = (element: HTMLElement) => {
   revealTL.from(chatElement, { duration: 0.6, y: '1rem', opacity: 0, ease: 'power4.inOut' }, '<');
 };
 
+// -----------------------
+// Update Chat View
+// -----------------------
 export const updateChatPostion = () => {
   const chatArea = document.querySelector('.chatbot_message-component') as Element;
 
@@ -22,6 +25,22 @@ export const updateChatPostion = () => {
     duration: 0.2,
     ease: 'power4.inOut',
   });
+};
+
+// -------------------------
+// Chatbot Switch Transition
+// -------------------------
+export const switchChatbot = (element: HTMLElement) => {
+  const staticInput = document.querySelector('#chatInput');
+  const aiInput = document.querySelector('#aiChatInput');
+
+  const transitionTL = gsap.timeline();
+  transitionTL
+    .set(staticInput, { duration: 0, display: 'none' })
+    .set(aiInput, { duration: 0, display: 'block' });
+  transitionTL
+    .to(element, { duration: 0.6, display: 'flex', ease: 'power4.inOut' })
+    .from(element, { duration: 0.6, opacity: 0, y: '1rem', ease: 'power4.inOut' }, '<');
 };
 
 // -----------------------

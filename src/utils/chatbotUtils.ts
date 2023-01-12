@@ -1,4 +1,4 @@
-import { chatReveal, updateChatPostion } from '$motion/chatbotMotion';
+import { chatReveal, updateChatPostion, switchChatbot } from '$motion/chatbotMotion';
 
 // -------------------------
 // Static Chatbot Questions
@@ -47,11 +47,16 @@ export const updateLedger = (input: {
   }
 };
 
+export const timeout = (ms: number) => {
+  return new Promise((res) => setTimeout(res, ms));
+};
+
 // ---------------------
 // generate chat element
 // ---------------------
 export const generateChatElement = (uiType: string, message: string, msgType: string) => {
   let newElement;
+  const chatArea = document.querySelector('.chatbot_message-component');
 
   if (msgType === 'contact') {
     newElement = cloneTemplate(msgType);
@@ -69,7 +74,6 @@ export const generateChatElement = (uiType: string, message: string, msgType: st
     newElement.children[0].children[0].append(imgObj);
   }
   // console.log('NE', newElement);
-  const chatArea = document.querySelector('.chatbot_message-component');
   chatArea?.append(newElement);
   chatReveal(newElement);
   updateChatPostion();
@@ -77,6 +81,21 @@ export const generateChatElement = (uiType: string, message: string, msgType: st
   return newElement;
 };
 
+// -----------------------
+// generate switch element
+// -----------------------
+export const executeChatSwitch = () => {
+  const chatArea = document.querySelector('.chatbot_message-component');
+
+  const chatSwitchElement = cloneTemplate('switch');
+  chatArea?.append(chatSwitchElement);
+  switchChatbot(chatSwitchElement);
+  updateChatPostion();
+};
+
+// ---------------------
+// Clone UI Template
+// ---------------------
 function cloneTemplate(type: string) {
   const aiTemplate = document.querySelector(
     '.chatbot-message_container.is-question'
@@ -90,6 +109,7 @@ function cloneTemplate(type: string) {
   const buttonTemplate = document.querySelector(
     '.chatbot-message_container.has-buttons'
   ) as HTMLElement;
+  const switchTemplate = document.querySelector('.chatbot-message_seperator') as HTMLElement;
 
   let newElement: HTMLElement = aiTemplate as HTMLElement;
 
@@ -115,6 +135,8 @@ function cloneTemplate(type: string) {
         sendButton.click();
       });
     }
+  } else if (type === 'switch') {
+    newElement = switchTemplate.cloneNode(true) as HTMLElement;
   }
   return newElement;
 }
@@ -142,7 +164,7 @@ export const generateHubpotJSON = (
 // ------------------------
 // Post Chat Data - Hubspot
 // ------------------------
-export const postChatHS = (data: string, target: HTMLFormElement) => {
+export const postChatHS = (data: string, target: HTMLFormElement, useAIChat: boolean) => {
   $.ajax({
     url: target.action,
     method: 'POST',
@@ -152,9 +174,14 @@ export const postChatHS = (data: string, target: HTMLFormElement) => {
       const parent = target.parentElement;
       const formEle = parent?.querySelector('form') as HTMLElement;
       const wfDone = parent?.querySelector('.w-form-done') as HTMLElement;
-      formEle.style.display = 'none';
-      wfDone.style.display = 'block';
-      window.location.href = 'https://www.mavyn.com/thank-you';
+
+      if (useAIChat === true) {
+        console.log('trigger conversion method');
+      } else {
+        formEle.style.display = 'none';
+        wfDone.style.display = 'block';
+        successRedirect();
+      }
     },
     error: function () {
       // alert('error on the form submitting', data);
@@ -163,13 +190,25 @@ export const postChatHS = (data: string, target: HTMLFormElement) => {
   });
 };
 
+function successRedirect() {
+  window.location.href = 'https://www.mavyn.com/thank-you';
+}
+
 // --------------------
 // Post Chat Data - AI
 // ---------------------
 export const postChatAI = (chatAnswer: string) => {
-  const chatFormElement = document.querySelector('#generalChatForm')
-    ?.children[0] as HTMLFormElement;
-  const apiEndpoint = chatFormElement.action;
+  const chatFormElement = document.querySelector('.chatbot_form')?.children[0] as HTMLFormElement;
+  const formEndpoint = chatFormElement.action;
+  const aiEndpoint = 'https://mavyn-py-api.herokuapp.com/api/logmsgai';
+  let finalEndpoint = '';
+
+  if (formEndpoint !== aiEndpoint) {
+    finalEndpoint = aiEndpoint;
+  } else {
+    finalEndpoint = formEndpoint;
+  }
+
   const data = {
     question: chatAnswer,
     chatLog: ledger.chatLog,
@@ -188,7 +227,7 @@ export const postChatAI = (chatAnswer: string) => {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: 'POST',
-        url: apiEndpoint,
+        url: finalEndpoint,
         data: json,
         contentType: 'application/json',
         success: function (result) {
