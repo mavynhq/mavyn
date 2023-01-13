@@ -145,6 +145,7 @@ export const chatbot = () => {
         }
       } else {
         // console.log('submit normal');
+        chatInput.value = '';
         submitChat.click();
       }
     }

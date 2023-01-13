@@ -8,6 +8,7 @@ specifiers:
   '@finsweet/tsconfig': ^1.1.0
   '@playwright/test': ^1.25.0
   '@trivago/prettier-plugin-sort-imports': ^3.3.0
+  '@types/gtag.js': ^0.0.12
   '@types/jquery': ^3.5.14
   '@typescript-eslint/eslint-plugin': ^5.33.0
   '@typescript-eslint/parser': ^5.33.0
@@ -16,6 +17,7 @@ specifiers:
   eslint: ^8.21.0
   eslint-config-prettier: ^8.5.0
   eslint-plugin-prettier: ^4.2.1
+  ga-gtag: ^1.1.6
   gsap: ^3.11.0
   prettier: ^2.7.1
   typescript: ^4.7.4
@@ -31,6 +33,7 @@ devDependencies:
   '@finsweet/tsconfig': 1.1.0
   '@playwright/test': 1.25.0
   '@trivago/prettier-plugin-sort-imports': 3.3.0_prettier@2.7.1
+  '@types/gtag.js': 0.0.12
   '@types/jquery': 3.5.14
   '@typescript-eslint/eslint-plugin': 5.33.0_njno5y7ry2l2lcmiu4tywxkwnq
   '@typescript-eslint/parser': 5.33.0_qugx7qdu5zevzvxaiqyxfiwquq
@@ -39,6 +42,7 @@ devDependencies:
   eslint: 8.21.0
   eslint-config-prettier: 8.5.0_eslint@8.21.0
   eslint-plugin-prettier: 4.2.1_h62lvancfh4b7r6zn2dgodrh5e
+  ga-gtag: 1.1.6
   prettier: 2.7.1
   typescript: 4.7.4
 
@@ -654,6 +658,10 @@ packages:
       prettier: 2.7.1
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /@types/gtag.js/0.0.12:
+    resolution: {integrity: sha512-YQV9bUsemkzG81Ea295/nF/5GijnD2Af7QhEofh7xu+kvCN6RdodgNwwGWXB5GMI3NoyvQo0odNctoH/qLMIpg==}
     dev: true
 
   /@types/is-ci/3.0.0:
@@ -1737,6 +1745,10 @@ packages:
 
   /functions-have-names/1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
+    dev: true
+
+  /ga-gtag/1.1.6:
+    resolution: {integrity: sha512-HiAdeRYo2k+UUNYryTB0ejyeUvWtcdj53NU2hWY8S/2CZDb47m7PS4U8ZQvO/z0yXfmtdnb2bhI62MDsJelbEg==}
     dev: true
 
   /gensync/1.0.0-beta.2:
