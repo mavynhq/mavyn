@@ -178,7 +178,6 @@ export const postChatHS = (data: string, target: HTMLFormElement, useAIChat: boo
 
       if (useAIChat === true) {
         console.log('trigger conversion method');
-        gtagConversion(window.location);
       } else {
         formEle.style.display = 'none';
         wfDone.style.display = 'block';
@@ -275,22 +274,4 @@ export const isValidPhoneFormat = (phone: string) => {
   return (
     trimmedNumber.length >= MIN_NUMBER_OF_DIGITS && trimmedNumber.length <= MAX_NUMBER_OF_DIGITS
   );
-};
-
-// ----------------------------
-// Google Ad Coversion Tracking
-// ----------------------------
-export const gtagConversion = (url: Location) => {
-  console.log('GTAG', url);
-  const callback = function () {
-    if (typeof url !== 'undefined') {
-      console.log('conversion successful');
-      // window.location = url;
-    }
-  };
-  gtag('event', 'conversion', {
-    send_to: 'AW-10790538557/r6DBCICbhogYEL2aqpko',
-    event_callback: callback,
-  });
-  return false;
 };
