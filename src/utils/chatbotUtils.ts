@@ -1,4 +1,3 @@
-// import { gtag } from 'ga-gtag';
 import { chatReveal, updateChatPostion, switchChatbot } from '$motion/chatbotMotion';
 
 // -------------------------
@@ -25,6 +24,8 @@ const ledger = {
   id: 0,
   seqnum: 0,
   image: 0,
+  category: window.location.pathname.replace('/', ''),
+  tid: 1375826063,
 };
 
 export const getLedger = () => {
@@ -37,11 +38,15 @@ export const updateLedger = (input: {
   id: number;
   image: number;
   seqnum: number;
+  category: string;
+  tid: number;
 }) => {
   ledger.chatLog = input.chat_log;
   ledger.id = input.id;
   ledger.seqnum = input.seqnum;
   ledger.image = input.image;
+  ledger.category = input.category;
+  ledger.tid = input.tid;
 
   if (ledger.image === 1) {
     sessionImage.push(input.answer);
@@ -215,8 +220,12 @@ export const postChatAI = (chatAnswer: string) => {
     chatLog: ledger.chatLog,
     id: ledger.id,
     seqnum: ledger.seqnum,
+    category: ledger.category,
+    tid: ledger.tid,
   };
   const json = JSON.stringify(data);
+
+  console.log('DATA', json);
 
   function postData(): Promise<{
     answer: string;
@@ -224,6 +233,8 @@ export const postChatAI = (chatAnswer: string) => {
     id: number;
     image: number;
     seqnum: number;
+    category: string;
+    tid: number;
   }> {
     return new Promise((resolve, reject) => {
       $.ajax({
@@ -242,7 +253,7 @@ export const postChatAI = (chatAnswer: string) => {
   }
   postData()
     .then((result) => {
-      // console.log('RESULT ', result);
+      console.log('RESULT ', result);
       const rMessage = result.answer;
       updateLedger(result);
       generateChatElement('ai', rMessage, 'answer');
