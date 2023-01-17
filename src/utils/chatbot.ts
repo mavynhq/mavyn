@@ -92,23 +92,28 @@ export const chatbot = () => {
     }
 
     if (answerIndex === expectedAamount) {
+      console.log('CHAT DONE');
       answers.push(answerText);
       generateChatElement('human', answerText, 'phone');
+
+      chatInput.value = '';
 
       const contactType = answers[2];
       const submitChat = document.querySelector('#chatbotSubmit') as HTMLElement;
 
-      if (contactType === 'AI Chat') {
-        chatInput.value = '';
-        // let contactUI: HTMLElement;
-        await timeout(1000);
-        const contactUI = generateChatElement(
-          'contact',
-          'Do you wish to continue with AI',
-          'prompt'
-        ) as HTMLElement;
+      await timeout(1000);
+      const contactUI = generateChatElement(
+        'contact',
+        'Do you wish to continue with AI',
+        'prompt'
+      ) as HTMLElement;
 
-        const buttonElements = contactUI.children[1].children[0].childNodes;
+      const buttonElements = contactUI.children[1].children[0].childNodes;
+
+      console.log('BUTTONS', buttonElements);
+
+      if (contactType === 'AI Chat') {
+        // let contactUI: HTMLElement;
 
         for (let i = 0; i < buttonElements.length; i++) {
           const temp = buttonElements[i] as HTMLElement;
@@ -121,32 +126,32 @@ export const chatbot = () => {
             temp.style.display = 'none';
           }
 
-          temp.addEventListener('click', async (e) => {
-            const buttonClicked = e.target as HTMLElement;
-            const buttonText = buttonClicked.children[0].innerHTML;
+          // temp.addEventListener('click', async (e) => {
+          //   const buttonClicked = e.target as HTMLElement;
+          //   const buttonText = buttonClicked.children[0].innerHTML;
 
-            if (buttonText === 'Yes') {
-              useAIChat = true;
-              executeChatSwitch();
-              await timeout(1000);
-              aiChatbot();
+          //   if (buttonText === 'Yes') {
+          //     useAIChat = true;
+          //     executeChatSwitch();
+          //     await timeout(1000);
+          //     aiChatbot();
 
-              submitChat.click();
+          //     submitChat.click();
 
-              const autoFillText = answers[0] as string;
-              const aiInput = document.querySelector('#aiChatInput') as HTMLInputElement;
-              aiInput.value = autoFillText;
-              chatSend.click();
-            } else {
-              chatInput.value = '';
-              submitChat.click();
-            }
-          });
+          //     const autoFillText = answers[0] as string;
+          //     const aiInput = document.querySelector('#aiChatInput') as HTMLInputElement;
+          //     aiInput.value = autoFillText;
+          //     chatSend.click();
+          //   } else {
+          //     chatInput.value = '';
+          //     submitChat.click();
+          //   }
+          // });
         }
       } else {
         // console.log('submit normal');
         chatInput.value = '';
-        submitChat.click();
+        // submitChat.click();
       }
     }
 
