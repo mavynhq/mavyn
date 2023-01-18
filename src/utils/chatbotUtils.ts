@@ -1,5 +1,7 @@
 import { chatReveal, updateChatPostion, switchChatbot } from '$motion/chatbotMotion';
 
+import { aiChatbot } from './chatbot';
+
 // -------------------------
 // Static Chatbot Questions
 // -------------------------
@@ -25,7 +27,7 @@ const ledger = {
   seqnum: 0,
   image: 0,
   category: window.location.pathname.replace('/', ''),
-  tid: 1375826063,
+  tid: '1375826063',
 };
 
 export const getLedger = () => {
@@ -39,18 +41,20 @@ export const updateLedger = (input: {
   image: number;
   seqnum: number;
   category: string;
-  tid: number;
 }) => {
   ledger.chatLog = input.chat_log;
   ledger.id = input.id;
   ledger.seqnum = input.seqnum;
   ledger.image = input.image;
   ledger.category = input.category;
-  ledger.tid = input.tid;
 
   if (ledger.image === 1) {
     sessionImage.push(input.answer);
   }
+};
+
+export const updateTID = (input: string) => {
+  ledger.tid = input;
 };
 
 export const timeout = (ms: number) => {
@@ -147,53 +151,73 @@ function cloneTemplate(type: string) {
   return newElement;
 }
 
-// ------------------------------------------
-// Generate JSON for chatbot post to Hubspot
-// ------------------------------------------
-export const generateHubpotJSON = (
+// ------------------------
+// Post Chat Data - Hubspot
+// ------------------------
+export const postChatHS = (
   questions: {
     text: string;
     type: string;
   }[],
-  answers: string[]
+  answers: string[],
+  target: HTMLFormElement,
+  useAIChat: boolean
 ) => {
-  const data = {
+  const hsPayload = {
     slug: document.querySelector('.section-page-tag')?.innerHTML.toLocaleLowerCase(),
     chatQuestions: questions,
     answers: answers,
   };
+  const json = JSON.stringify(hsPayload);
 
-  const finalData = JSON.stringify(data);
-  return finalData;
-};
+  const autofillAnswer = answers[0];
 
-// ------------------------
-// Post Chat Data - Hubspot
-// ------------------------
-export const postChatHS = (data: string, target: HTMLFormElement, useAIChat: boolean) => {
-  $.ajax({
-    url: target.action,
-    method: 'POST',
-    data: data,
-    contentType: 'application/json',
-    success: function () {
+  function postData(): Promise<{ hubspotId: string }> {
+    return new Promise((resolve, reject) => {
+      $.ajax({
+        url: target.action,
+        method: 'POST',
+        data: json,
+        contentType: 'application/json',
+        success: function (result) {
+          resolve(result);
+        },
+        error: function (error) {
+          reject(error);
+        },
+      });
+    });
+  }
+  postData()
+    .then(async (result) => {
+      console.log('RESULT', result);
+
+      const tid = result.hubspotId;
+
       const parent = target.parentElement;
       const formEle = parent?.querySelector('form') as HTMLElement;
       const wfDone = parent?.querySelector('.w-form-done') as HTMLElement;
 
+      updateTID(tid);
+
       if (useAIChat === true) {
-        console.log('trigger conversion method');
+        executeChatSwitch();
+        await timeout(1000);
+        aiChatbot();
+        const aiInput = document.querySelector('#aiChatInput') as HTMLInputElement;
+        const chatSend = document.querySelector('#chatbotSend') as HTMLElement;
+        aiInput.value = autofillAnswer;
+        chatSend.click();
       } else {
         formEle.style.display = 'none';
         wfDone.style.display = 'block';
         successRedirect();
       }
-    },
-    error: function () {
-      // alert('error on the form submitting', data);
+    })
+    .catch((error) => {
+      // console.log('ERROR', error);
       $(target).css('display', 'none').siblings('.w-form-fail').css('display', 'block');
-    },
-  });
+    });
 };
 
 function successRedirect() {
@@ -215,7 +239,7 @@ export const postChatAI = (chatAnswer: string) => {
     finalEndpoint = formEndpoint;
   }
 
-  const data = {
+  const aiPayload = {
     question: chatAnswer,
     chatLog: ledger.chatLog,
     id: ledger.id,
@@ -223,9 +247,7 @@ export const postChatAI = (chatAnswer: string) => {
     category: ledger.category,
     tid: ledger.tid,
   };
-  const json = JSON.stringify(data);
-
-  console.log('DATA', json);
+  const json = JSON.stringify(aiPayload);
 
   function postData(): Promise<{
     answer: string;
@@ -253,7 +275,7 @@ export const postChatAI = (chatAnswer: string) => {
   }
   postData()
     .then((result) => {
-      console.log('RESULT ', result);
+      // console.log('RESULT ', result);
       const rMessage = result.answer;
       updateLedger(result);
       generateChatElement('ai', rMessage, 'answer');

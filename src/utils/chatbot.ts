@@ -4,10 +4,8 @@ import {
   generateChatElement,
   validateEmail,
   isValidPhoneFormat,
-  generateHubpotJSON,
   postChatHS,
   postChatAI,
-  executeChatSwitch,
   timeout,
 } from '$utils/chatbotUtils';
 import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
@@ -92,28 +90,24 @@ export const chatbot = () => {
     }
 
     if (answerIndex === expectedAamount) {
-      console.log('CHAT DONE');
       answers.push(answerText);
       generateChatElement('human', answerText, 'phone');
 
       chatInput.value = '';
 
-      const contactType = answers[2];
       const submitChat = document.querySelector('#chatbotSubmit') as HTMLElement;
 
-      await timeout(1000);
-      const contactUI = generateChatElement(
-        'contact',
-        'Do you wish to continue with AI',
-        'prompt'
-      ) as HTMLElement;
+      // UNWRAP IF/ELSE WHEN READY FOR FULL LAUNCH
+      if (window.location.pathname.includes('technology')) {
+        // console.log('is tech');
+        await timeout(1000);
+        const contactUI = generateChatElement(
+          'contact',
+          'Would you like to chat with our AI now to help solve the problem?',
+          'prompt'
+        ) as HTMLElement;
 
-      const buttonElements = contactUI.children[1].children[0].childNodes;
-
-      console.log('BUTTONS', buttonElements);
-
-      if (contactType === 'AI Chat') {
-        // let contactUI: HTMLElement;
+        const buttonElements = contactUI.children[1].children[0].childNodes;
 
         for (let i = 0; i < buttonElements.length; i++) {
           const temp = buttonElements[i] as HTMLElement;
@@ -126,35 +120,24 @@ export const chatbot = () => {
             temp.style.display = 'none';
           }
 
-          // temp.addEventListener('click', async (e) => {
-          //   const buttonClicked = e.target as HTMLElement;
-          //   const buttonText = buttonClicked.children[0].innerHTML;
+          temp.addEventListener('click', async (e) => {
+            const buttonClicked = e.target as HTMLElement;
+            const buttonText = buttonClicked.children[0].innerHTML;
 
-          //   if (buttonText === 'Yes') {
-          //     useAIChat = true;
-          //     executeChatSwitch();
-          //     await timeout(1000);
-          //     aiChatbot();
-
-          //     submitChat.click();
-
-          //     const autoFillText = answers[0] as string;
-          //     const aiInput = document.querySelector('#aiChatInput') as HTMLInputElement;
-          //     aiInput.value = autoFillText;
-          //     chatSend.click();
-          //   } else {
-          //     chatInput.value = '';
-          //     submitChat.click();
-          //   }
-          // });
+            if (buttonText === 'Yes') {
+              useAIChat = true;
+              submitChat.click();
+            } else {
+              chatInput.value = '';
+              submitChat.click();
+            }
+          });
         }
       } else {
-        // console.log('submit normal');
         chatInput.value = '';
-        // submitChat.click();
+        submitChat.click();
       }
     }
-
     chatClearError();
   });
 
@@ -169,16 +152,11 @@ export const chatbot = () => {
   });
 
   const chatbotForm = document.querySelector('#chatbotForm');
-  chatbotForm?.addEventListener('submit', (e) => {
+  chatbotForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const target = e.target as HTMLFormElement;
-    const chatJSON = generateHubpotJSON(questions, answers);
 
-    if (useAIChat === true) {
-      postChatHS(chatJSON, target, useAIChat);
-    } else if (useAIChat === false) {
-      postChatHS(chatJSON, target, useAIChat);
-    }
+    postChatHS(questions, answers, target, useAIChat);
   });
 };
 
@@ -194,7 +172,6 @@ export const aiChatbot = () => {
 
   // form submission
   chatSend?.addEventListener('click', () => {
-    // const chatFormInput = document.querySelector('#chatInput') as HTMLInputElement;
     const humanResponce = chatInput.value as string;
 
     generateChatElement('human', humanResponce, 'prompt');
