@@ -5,7 +5,6 @@ import { gsap } from 'gsap';
 // -----------------------
 export const chatReveal = (element: HTMLElement) => {
   const chatElement = element;
-  // console.log(chatElement);
 
   const revealTL = gsap.timeline();
   revealTL.to(chatElement, { duration: 0.6, display: 'flex', ease: 'power4.inOut' });
@@ -47,15 +46,14 @@ export const switchChatbot = (element: HTMLElement) => {
 // Chat step error
 // -----------------------
 export const chatStepError = (index: number, error: string) => {
-  const chatFormElements = document.querySelectorAll('.chatbot_text-area.chatbot');
-  const curFormElement = chatFormElements[index] as HTMLInputElement;
+  const chatInput = document.querySelectorAll('.chatbot_text-area.chatbot');
   const formErrorElement = document.querySelector('.chatbot_step-error');
   const formErrorTextElement = document.querySelector('.chatbot_error-text') as HTMLElement;
 
   formErrorTextElement.innerHTML = error;
 
   const stepErrorTimeline = gsap.timeline();
-  stepErrorTimeline.to(curFormElement, {
+  stepErrorTimeline.to(chatInput, {
     duration: 0.5,
     backgroundColor: 'rgba(24, 161, 255, 0.1)',
     borderColor: 'rgba(24, 161, 255, 0.6)',

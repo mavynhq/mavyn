@@ -126,9 +126,11 @@ export const chatbot = () => {
 
             if (buttonText === 'Yes') {
               useAIChat = true;
+              generateChatElement('human', 'Yes', '');
               submitChat.click();
             } else {
               chatInput.value = '';
+              generateChatElement('human', 'No', '');
               submitChat.click();
             }
           });

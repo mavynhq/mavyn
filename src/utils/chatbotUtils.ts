@@ -91,18 +91,6 @@ export const generateChatElement = (uiType: string, message: string, msgType: st
   return newElement;
 };
 
-// -----------------------
-// generate switch element
-// -----------------------
-export const executeChatSwitch = () => {
-  const chatArea = document.querySelector('.chatbot_message-component');
-
-  const chatSwitchElement = cloneTemplate('switch');
-  chatArea?.append(chatSwitchElement);
-  switchChatbot(chatSwitchElement);
-  updateChatPostion();
-};
-
 // ---------------------
 // Clone UI Template
 // ---------------------
@@ -151,6 +139,18 @@ function cloneTemplate(type: string) {
   return newElement;
 }
 
+// -----------------------
+// generate switch element
+// -----------------------
+export const executeChatSwitch = () => {
+  const chatArea = document.querySelector('.chatbot_message-component');
+
+  const chatSwitchElement = cloneTemplate('switch');
+  chatArea?.append(chatSwitchElement);
+  switchChatbot(chatSwitchElement);
+  updateChatPostion();
+};
+
 // ------------------------
 // Post Chat Data - Hubspot
 // ------------------------
@@ -179,6 +179,11 @@ export const postChatHS = (
         method: 'POST',
         data: json,
         contentType: 'application/json',
+        beforeSend: () => {
+          setTimeout(() => {
+            generateChatElement('ai', 'Please wait...', 'prompt');
+          }, 500);
+        },
         success: function (result) {
           resolve(result);
         },
@@ -190,10 +195,8 @@ export const postChatHS = (
   }
   postData()
     .then(async (result) => {
-      console.log('RESULT', result);
-
+      // console.log('RESULT', result);
       const tid = result.hubspotId;
-
       const parent = target.parentElement;
       const formEle = parent?.querySelector('form') as HTMLElement;
       const wfDone = parent?.querySelector('.w-form-done') as HTMLElement;
@@ -214,7 +217,7 @@ export const postChatHS = (
         successRedirect();
       }
     })
-    .catch((error) => {
+    .catch(() => {
       // console.log('ERROR', error);
       $(target).css('display', 'none').siblings('.w-form-fail').css('display', 'block');
     });
