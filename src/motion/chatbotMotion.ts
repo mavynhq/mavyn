@@ -15,6 +15,7 @@ export const chatReveal = (element: HTMLElement) => {
 // Update Chat View
 // -----------------------
 export const updateChatPostion = () => {
+  // console.log('update pos');
   const chatArea = document.querySelector('.chatbot_message-component') as Element;
 
   const updateAnswerTimeline = gsap.timeline();

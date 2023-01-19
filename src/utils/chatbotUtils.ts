@@ -72,7 +72,9 @@ export const generateChatElement = (uiType: string, message: string, msgType: st
     newElement = cloneTemplate(msgType);
   } else {
     newElement = cloneTemplate(uiType);
-    newElement.children[0].children[0].innerHTML = message;
+    if (message !== '') {
+      newElement.children[0].children[0].innerHTML = message;
+    }
   }
   if (message.includes('https')) {
     const imgSrc = sessionImage[sessionImage.length - 1];
@@ -108,6 +110,9 @@ function cloneTemplate(type: string) {
     '.chatbot-message_container.has-buttons'
   ) as HTMLElement;
   const switchTemplate = document.querySelector('.chatbot-message_seperator') as HTMLElement;
+  const waitAITemplate = document.querySelector(
+    '.chatbot-message_container.is-wait'
+  ) as HTMLElement;
 
   let newElement: HTMLElement = aiTemplate as HTMLElement;
 
@@ -135,6 +140,8 @@ function cloneTemplate(type: string) {
     }
   } else if (type === 'switch') {
     newElement = switchTemplate.cloneNode(true) as HTMLElement;
+  } else if (type === 'wait') {
+    newElement = waitAITemplate.cloneNode(true) as HTMLElement;
   }
   return newElement;
 }
@@ -262,12 +269,19 @@ export const postChatAI = (chatAnswer: string) => {
     tid: number;
   }> {
     return new Promise((resolve, reject) => {
+      let tempWaitUI: HTMLElement;
       $.ajax({
         type: 'POST',
         url: finalEndpoint,
         data: json,
         contentType: 'application/json',
+        beforeSend: () => {
+          setTimeout(() => {
+            tempWaitUI = generateChatElement('wait', '', '') as HTMLElement;
+          }, 500);
+        },
         success: function (result) {
+          tempWaitUI.remove();
           resolve(result);
         },
         error: function (error) {
@@ -277,10 +291,11 @@ export const postChatAI = (chatAnswer: string) => {
     });
   }
   postData()
-    .then((result) => {
+    .then(async (result) => {
       // console.log('RESULT ', result);
       const rMessage = result.answer;
       updateLedger(result);
+      await timeout(200);
       generateChatElement('ai', rMessage, 'answer');
     })
     .catch((error) => {
@@ -289,15 +304,15 @@ export const postChatAI = (chatAnswer: string) => {
     });
 };
 
+// --------------------
+// Form Checking
+// ---------------------
 export const validateEmail = (email: string) => {
   return /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
     email
   );
 };
 
-// --------------------
-// Form Checking
-// ---------------------
 export const trimNonDigits = (value: string) => {
   return value.replace(/[^\d]/g, '');
 };
