@@ -89,17 +89,17 @@ export const generateChatElement = (uiType: string, message: string, msgType: st
     newElement = cloneTemplate('rich');
     newElement.children[0].children[0].append(imgObj);
 
-    console.log('img obj:', imgObj);
+    // console.log('img obj:', imgObj);
 
-    let imgClicked = false;
-    imgObj.addEventListener('click', () => {
-      imgClicked = !imgClicked;
-      console.log('click');
-      if (imgClicked === true) {
-        console.log(imgObj.parentNode?.parentNode);
-      } else if (imgClicked === false) {
-      }
-    });
+    // let imgClicked = false;
+    // imgObj.addEventListener('click', () => {
+    //   imgClicked = !imgClicked;
+    //   // console.log('click');
+    //   if (imgClicked === true) {
+    //     // console.log(imgObj.parentNode?.parentNode);
+    //   } else if (imgClicked === false) {
+    //   }
+    // });
   }
   // console.log('NE', newElement);
   chatArea?.append(newElement);
