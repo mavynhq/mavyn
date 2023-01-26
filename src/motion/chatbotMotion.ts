@@ -44,6 +44,11 @@ export const switchChatbot = (element: HTMLElement) => {
 };
 
 // -----------------------
+// Toggle Fullscreen Image
+// -----------------------
+// export const chatImageFullscreen = () => {};
+
+// -----------------------
 // Chat step error
 // -----------------------
 export const chatStepError = (index: number, error: string) => {

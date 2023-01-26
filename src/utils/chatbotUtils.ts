@@ -28,6 +28,7 @@ const ledger = {
   image: 0,
   category: window.location.pathname.replace('/', ''),
   tid: '1375826063',
+  dev: true,
 };
 
 export const getLedger = () => {
@@ -41,12 +42,14 @@ export const updateLedger = (input: {
   image: number;
   seqnum: number;
   category: string;
+  dev: boolean;
 }) => {
   ledger.chatLog = input.chat_log;
   ledger.id = input.id;
   ledger.seqnum = input.seqnum;
   ledger.image = input.image;
   ledger.category = input.category;
+  ledger.dev = input.dev;
 
   if (ledger.image === 1) {
     sessionImage.push(input.answer);
@@ -81,9 +84,22 @@ export const generateChatElement = (uiType: string, message: string, msgType: st
     const imgObj = document.createElement('img');
     imgObj.src = imgSrc;
     imgObj.classList.add('ai_image');
+    imgObj.classList.add('chatbot-message_image');
 
     newElement = cloneTemplate('rich');
     newElement.children[0].children[0].append(imgObj);
+
+    console.log('img obj:', imgObj);
+
+    let imgClicked = false;
+    imgObj.addEventListener('click', () => {
+      imgClicked = !imgClicked;
+      console.log('click');
+      if (imgClicked === true) {
+        console.log(imgObj.parentNode?.parentNode);
+      } else if (imgClicked === false) {
+      }
+    });
   }
   // console.log('NE', newElement);
   chatArea?.append(newElement);
@@ -256,6 +272,7 @@ export const postChatAI = (chatAnswer: string) => {
     seqnum: ledger.seqnum,
     category: ledger.category,
     tid: ledger.tid,
+    dev: true,
   };
   const json = JSON.stringify(aiPayload);
 
@@ -267,6 +284,7 @@ export const postChatAI = (chatAnswer: string) => {
     seqnum: number;
     category: string;
     tid: number;
+    dev: boolean;
   }> {
     return new Promise((resolve, reject) => {
       let tempWaitUI: HTMLElement;
