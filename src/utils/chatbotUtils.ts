@@ -26,7 +26,7 @@ const ledger = {
   id: 0,
   seqnum: 0,
   image: 0,
-  category: window.location.pathname.replace('/', ''),
+  category: document.querySelector('.section-page-tag')?.innerHTML.toLocaleLowerCase(),
   tid: '1375826063',
   dev: true,
 };
@@ -220,6 +220,7 @@ export const postChatHS = (
     .then(async (result) => {
       // console.log('RESULT', result);
       const tid = result.hubspotId;
+
       const parent = target.parentElement;
       const formEle = parent?.querySelector('form') as HTMLElement;
       const wfDone = parent?.querySelector('.w-form-done') as HTMLElement;
@@ -274,6 +275,9 @@ export const postChatAI = (chatAnswer: string) => {
     tid: ledger.tid,
     dev: true,
   };
+
+  console.log('AI submit', aiPayload, aiPayload.chatLog);
+
   const json = JSON.stringify(aiPayload);
 
   function postData(): Promise<{
@@ -310,7 +314,7 @@ export const postChatAI = (chatAnswer: string) => {
   }
   postData()
     .then(async (result) => {
-      // console.log('RESULT ', result);
+      console.log('AI RESULT ', result);
       const rMessage = result.answer;
       updateLedger(result);
       await timeout(200);
