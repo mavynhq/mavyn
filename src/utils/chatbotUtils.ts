@@ -167,11 +167,17 @@ function cloneTemplate(type: string) {
 // -----------------------
 export const executeChatSwitch = () => {
   const chatArea = document.querySelector('.chatbot_message-component');
+  const expertChatButton = document.querySelector('#aiExpertButton') as HTMLElement;
 
   const chatSwitchElement = cloneTemplate('switch');
   chatArea?.append(chatSwitchElement);
   switchChatbot(chatSwitchElement);
   updateChatPostion();
+
+  expertChatButton.style.display = 'block';
+  expertChatButton.addEventListener('click', () => {
+    successRedirect();
+  });
 };
 
 // ------------------------
@@ -276,8 +282,6 @@ export const postChatAI = (chatAnswer: string) => {
     dev: true,
   };
 
-  console.log('AI submit', aiPayload, aiPayload.chatLog);
-
   const json = JSON.stringify(aiPayload);
 
   function postData(): Promise<{
@@ -314,7 +318,7 @@ export const postChatAI = (chatAnswer: string) => {
   }
   postData()
     .then(async (result) => {
-      console.log('AI RESULT ', result);
+      // console.log('AI RESULT ', result);
       const rMessage = result.answer;
       updateLedger(result);
       await timeout(200);
