@@ -14,6 +14,22 @@ export const squeeze = () => {
     navTransition(navScrollSection, hasVideoBG);
   }, 100);
 
+  // ------------------
+  // Set chat form link
+  // ------------------
+  const chatForm = document.querySelector('#wf-form-Chatbot-Form') as HTMLFormElement;
+  const chatStagingAPI = 'https://staging.mavyn.com/api/v1/calls/chat-form';
+  const chatProdAPI = 'https://app.mavyn.com/api/v1/calls/chat-form';
+  const curEnv = window.location.hostname;
+  const isDev = window.location.search.includes('dev');
+
+  if (curEnv.includes('.webflow.io')) {
+    chatForm.action = chatProdAPI;
+    if (isDev) {
+      chatForm.action = chatStagingAPI;
+    }
+  }
+
   // ----------------------
   // Chatbot
   // ----------------------
