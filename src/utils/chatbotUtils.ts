@@ -176,7 +176,7 @@ export const executeChatSwitch = () => {
 
   expertChatButton.style.display = 'block';
   expertChatButton.addEventListener('click', () => {
-    successRedirect();
+    // successRedirect();
   });
 };
 
