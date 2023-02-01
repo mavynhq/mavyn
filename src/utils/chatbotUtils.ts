@@ -345,12 +345,10 @@ export const postAIExit = () => {
     url: apiEnndpoint,
     data: json,
     contentType: 'application/json',
-    success: (result) => {
-      // console.log('success', result);
+    success: () => {
       successRedirect();
     },
-    error: (error) => {
-      // console.log('ERROR:', error);
+    error: () => {
       successRedirect();
     },
   });
