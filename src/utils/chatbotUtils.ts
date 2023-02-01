@@ -176,6 +176,7 @@ export const executeChatSwitch = () => {
 
   expertChatButton.style.display = 'block';
   expertChatButton.addEventListener('click', () => {
+    postAIExit();
     // successRedirect();
   });
 };
@@ -328,6 +329,31 @@ export const postChatAI = (chatAnswer: string) => {
       // console.log('error', error);
       generateChatElement('ai', 'We aplogize, there was an error!' + error, 'error');
     });
+};
+
+// --------------------
+// Post HS ticket id
+// when AI exited
+// ---------------------
+export const postAIExit = () => {
+  const apiEnndpoint = 'https://mavyn-py-api.herokuapp.com/api/exitai';
+  const payLoad = { tid: ledger.tid };
+  const json = JSON.stringify(payLoad);
+
+  $.ajax({
+    type: 'POST',
+    url: apiEnndpoint,
+    data: json,
+    contentType: 'application/json',
+    success: (result) => {
+      // console.log('success', result);
+      successRedirect();
+    },
+    error: (error) => {
+      // console.log('ERROR:', error);
+      successRedirect();
+    },
+  });
 };
 
 // --------------------
