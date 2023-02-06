@@ -23,7 +23,7 @@ export const thanks = () => {
   const utcHour = userTime.getUTCHours();
   const cstHour = convertCST(utcHour);
 
-  if (cstHour >= 8 && cstHour <= 22) {
+  if (cstHour >= 8 && cstHour < 22) {
     outHours.style.display = 'none';
   } else {
     inHours.style.display = 'none';
