@@ -24,6 +24,8 @@ export const chatbot = () => {
   const questions = getChatQuestions();
   const expectedAamount = questions.length - 2;
   const answers: string[] = [];
+  const loadAIQuestion = document.querySelector('.section-ai-tag')?.innerHTML.toLocaleLowerCase();
+  console.log(loadAIQuestion);
   let useAIChat = false;
 
   const chatSend = document.querySelector('#chatbotSend') as HTMLElement;
@@ -97,9 +99,7 @@ export const chatbot = () => {
 
       const submitChat = document.querySelector('#chatbotSubmit') as HTMLElement;
 
-      // UNWRAP IF/ELSE WHEN READY FOR FULL LAUNCH
-      if (window.location.pathname.includes('technology')) {
-        // console.log('is tech');
+      if (loadAIQuestion === 'enabled') {
         await timeout(1000);
         const contactUI = generateChatElement(
           'contact',
