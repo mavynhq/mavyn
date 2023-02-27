@@ -1,5 +1,14 @@
 import { gsap } from 'gsap';
 
+export const formError = () => {
+  const formError = document.querySelector('#bookingFormError');
+  console.log(formError);
+  const animation = gsap.timeline({ paused: true });
+  animation.to(formError, { display: 'block' });
+
+  return animation;
+};
+
 export const formNext = () => {
   const formSlide01 = $('#bookFormSlide01');
   const formSlide01Children = formSlide01.children('.slider_item');

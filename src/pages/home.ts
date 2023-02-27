@@ -2,15 +2,13 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import { imageSliderNext, imageSliderPrev } from '$motion/imageSliderMotion';
-import { formNext, openDropdown, closeDropdown } from '$motion/mainFormMotion';
+import { formNext, openDropdown, closeDropdown, formError } from '$motion/mainFormMotion';
 import { navTransition } from '$motion/navTransition';
 import { preloader } from '$motion/preloader';
 import { servicesAnimIn, servicesAnimOut } from '$motion/servicesAccordianMotion';
-import { bookingJSON } from '$utils/generateBookingJSON';
 import { expertJSON } from '$utils/generateExpertJSON';
-import { convertFormData, postFormData } from '$utils/mainFormUtils';
+import { convertFormData, postFormData, checkForm } from '$utils/mainFormUtils';
 import { expertFormPost } from '$utils/postExpertForm';
-import { mainFormPost } from '$utils/postMainForm';
 import { querySelectorAlltoArray } from '$utils/querySelectorAlltoArray';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -59,22 +57,41 @@ export const homepage = () => {
   });
 
   //Form progression animation
-  const formTimeline = formNext();
+  const formNextAnimation = formNext();
+  const formErrorAnimation = formError();
+
   document.querySelector('#bookFormNext')?.addEventListener('click', () => {
-    formTimeline.play();
+    const formValid = checkForm(0);
+    formErrorAnimation.reverse();
+
+    if (formValid) {
+      formNextAnimation.play();
+    } else {
+      formErrorAnimation.play();
+    }
   });
+
   document.querySelector('#bookFormBack')?.addEventListener('click', () => {
-    formTimeline.reverse();
+    formNextAnimation.reverse();
   });
+
+  // document.querySelector()
 
   // Form ajax submission
   const bookingForm = document.querySelector('#wf-form-bookingForm');
   bookingForm?.addEventListener('submit', (e) => {
+    console.log('HERE');
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const data = convertFormData(form);
 
-    postFormData(data, form);
+    const formValid = checkForm(1);
+    if (formValid) {
+      // console.log('POST DATA');
+      postFormData(data, form);
+    } else {
+      formErrorAnimation.play();
+    }
   });
 
   // Form reset

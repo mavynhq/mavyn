@@ -1,5 +1,26 @@
 import { formWait } from '$motion/mainFormMotion';
 
+export const checkForm = (formStep: number) => {
+  const formWrap = document.querySelectorAll('.booking-form_slider-component');
+  const firstStep = formWrap[formStep] as HTMLElement;
+  const stepInputs = firstStep.getElementsByClassName('form-input');
+  const inputsValid = [];
+
+  for (let i = 0; i < stepInputs.length; i++) {
+    const input = stepInputs[i] as HTMLInputElement;
+    if (input.value !== '') {
+      inputsValid.push(true);
+    } else {
+      inputsValid.push(false);
+    }
+  }
+  if (inputsValid.includes(false)) {
+    return false;
+  }
+
+  return true;
+};
+
 export const convertFormData = (parse: HTMLFormElement) => {
   const formInputs = parse.elements;
   const dataObj: { [key: string]: string } = {};
@@ -33,11 +54,11 @@ export const postFormData = (data: string, target: HTMLFormElement) => {
       waitTimeline.play();
     },
     success: function () {
-      const parent = target.parentElement;
-      const formEle = parent?.querySelector('form') as HTMLElement;
-      const wfDone = parent?.querySelector('.w-form-done') as HTMLElement;
-      formEle.style.display = 'none';
-      wfDone.style.display = 'block';
+      // const parent = target.parentElement;
+      // const formEle = parent?.querySelector('form') as HTMLElement;
+      // const wfDone = parent?.querySelector('.w-form-done') as HTMLElement;
+      // formEle.style.display = 'none';
+      // wfDone.style.display = 'block';
       window.location.href = 'https://www.mavyn.com/thank-you';
     },
     error: function (req, err) {
