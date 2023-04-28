@@ -80,7 +80,6 @@ export const homepage = () => {
   // Form ajax submission
   const bookingForm = document.querySelector('#wf-form-bookingForm');
   bookingForm?.addEventListener('submit', (e) => {
-    console.log('HERE');
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const data = convertFormData(form);

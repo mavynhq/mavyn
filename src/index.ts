@@ -6,6 +6,7 @@ import { askGeneral } from './pages/askGeneral';
 import { squeeze } from './pages/askSqueeze';
 import { blog } from './pages/blog';
 import { blogTemplate } from './pages/blogTemplate';
+import { recruitment } from './pages/expertRecruitment';
 import { homepage } from './pages/home.js';
 import { terms } from './pages/terms';
 import { thanks } from './pages/thanks';
@@ -78,5 +79,7 @@ window.Webflow.push(() => {
     thanks();
   } else if (windowLocation === '/terms-of-service') {
     terms();
+  } else if (windowLocation === '/expert-recruitment') {
+    recruitment();
   }
 });
