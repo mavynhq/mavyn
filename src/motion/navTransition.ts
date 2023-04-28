@@ -24,7 +24,7 @@ export const navTransition = (scrollSection: string, hasVideoBG: boolean) => {
         start: '20% top',
         end: '20% top',
         toggleActions: 'play none none reverse',
-        markers: true,
+        // markers: true,
       },
     });
     navScrollTrigger
