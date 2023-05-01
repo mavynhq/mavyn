@@ -79,7 +79,7 @@ window.Webflow.push(() => {
     thanks();
   } else if (windowLocation === '/terms-of-service') {
     terms();
-  } else if (windowLocation === '/expert-recruitment') {
+  } else if (windowLocation === '/become-a-mavyn') {
     recruitment();
   }
 });
