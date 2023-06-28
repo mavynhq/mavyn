@@ -1,5 +1,5 @@
 import { navTransition } from '$motion/navTransition';
-import { chatbot } from '$utils/chatbot';
+import { aiChatbot, chatbot } from '$utils/chatbot';
 
 export const chatBusiness = () => {
   // ------------------
@@ -16,5 +16,6 @@ export const chatBusiness = () => {
   // ------------------
   // Chatbot
   // ------------------
-  chatbot();
+  // chatbot();
+  aiChatbot();
 };
